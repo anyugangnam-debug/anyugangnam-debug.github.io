@@ -51,24 +51,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const dailyDatePicker = document.getElementById('daily-date-picker');
     const historyContainer = document.getElementById('history-container');
 
-    // 상태 관리 (localStorage 데이터)
-    let isLoggedIn = localStorage.getItem('haruIsLoggedIn') === 'true';
-    
+    // 상태 관리 (일회성 메모리, 로컬 스토리지 배제)
     let plansData = {};
     let scheduleData = {};
     let memosData = {};
     let goalData = '';
-
-    if (!isLoggedIn) {
-        plansData = JSON.parse(localStorage.getItem('haruPlans')) || {};
-        scheduleData = JSON.parse(localStorage.getItem('haruSchedule')) || {};
-        memosData = JSON.parse(localStorage.getItem('haruMemos')) || {};
-        goalData = localStorage.getItem('haruGoal') || '';
-    }
-    
     let isHighPriority = false;
 
-    // 동기화 트리거
+    // 기존 브라우저에 남은 찌꺼기 데이터 강제 삭제 (게스트 일회성 달성을 위함)
+    ['haruPlans', 'haruSchedule', 'haruMemos', 'haruGoal', 'haruIsLoggedIn'].forEach(k => localStorage.removeItem(k));
+
+    // 동기화 트리거 (인덱스 html에서 로그인 유저일때만 Firestore로 전송)
     const triggerDataSync = () => {
         window.dispatchEvent(new CustomEvent('haruDataSaved', { 
             detail: { plans: plansData, schedule: scheduleData, memos: memosData, goal: goalData } 
@@ -90,25 +83,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.haruSetGuestMode = () => {
-        localStorage.setItem('haruIsLoggedIn', 'false');
-        isLoggedIn = false;
-        plansData = JSON.parse(localStorage.getItem('haruPlans')) || {};
-        scheduleData = JSON.parse(localStorage.getItem('haruSchedule')) || {};
-        memosData = JSON.parse(localStorage.getItem('haruMemos')) || {};
-        goalData = localStorage.getItem('haruGoal') || '';
+        plansData = {};
+        scheduleData = {};
+        memosData = {};
+        goalData = '';
         reRenderViews();
     };
 
     window.haruLoadData = (data) => {
-        localStorage.setItem('haruIsLoggedIn', 'true');
-        isLoggedIn = true;
-        
         plansData = data.plans || {};
         scheduleData = data.schedule || {};
         memosData = data.memos || {};
         goalData = data.goal !== undefined ? data.goal : '';
-        
-        // 로컬스토리지에는 게스트 데이터 보존을 위해 저장하지 않음!
         reRenderViews();
     };
     
@@ -168,13 +154,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 delete plansData[date];
             }
         });
-        if (!isLoggedIn) {
-            localStorage.setItem('haruPlans', JSON.stringify(plansData));
-        }
         if (!viewDaily.classList.contains('hidden')) {
             renderDailyTasks(); 
         }
-        if (isLoggedIn) triggerDataSync();
+        triggerDataSync();
     };
 
     const setHeaderForDate = () => {
@@ -206,17 +189,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 delete memosData[date];
             }
         });
-        if (!isLoggedIn) {
-            localStorage.setItem('haruMemos', JSON.stringify(memosData));
-        }
-        if (isLoggedIn) triggerDataSync();
+        triggerDataSync();
     };
 
     const saveGoalData = () => {
-        if (!isLoggedIn) {
-            localStorage.setItem('haruGoal', goalData);
-        }
-        if (isLoggedIn) triggerDataSync();
+        triggerDataSync();
     };
 
     // 목표 렌더링 및 이벤트
@@ -274,10 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 delete scheduleData[date];
             }
         });
-        if (!isLoggedIn) {
-            localStorage.setItem('haruSchedule', JSON.stringify(scheduleData));
-        }
-        if (isLoggedIn) triggerDataSync();
+        triggerDataSync();
     };
 
     const renderHourlySchedule = () => {
