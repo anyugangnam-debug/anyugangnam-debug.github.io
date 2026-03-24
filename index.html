@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="app-container">
         <!-- 대시보드 뷰 (새로운 메인 화면) -->
@@ -16,11 +18,13 @@
                 <div class="header-title">
                     <h1>내 하루 🌱</h1>
                     <div class="header-actions">
-                        <button id="theme-toggle-dash" class="icon-btn theme-toggle" title="다크/라이트 모드"><i class="fas fa-moon"></i></button>
+                        <button id="theme-toggle-dash" class="icon-btn theme-toggle" title="다크/라이트 모드"><i
+                                class="fas fa-moon"></i></button>
                     </div>
                 </div>
                 <div class="date-display-container">
-                    <span id="dash-date" class="date-display" style="font-size: 1.1rem; color: var(--primary-color);"></span>
+                    <span id="dash-date" class="date-display"
+                        style="font-size: 1.1rem; color: var(--primary-color);"></span>
                     <label class="date-picker-label" title="날짜 변경">
                         <i class="fas fa-calendar-day"></i>
                         <input type="date" id="dash-date-picker" class="hidden-date-picker">
@@ -28,15 +32,20 @@
                 </div>
             </header>
             <main class="dashboard-main">
-                <div class="greeting-message">
-                    오늘도 행복한 하루 보내세요! 🌻
+                <div class="greeting-message" style="display:flex; justify-content:space-between; align-items:center; text-align:left;">
+                    <div><span id="user-display" style="font-weight:700;">게스트</span>님,<br>오늘도 화이팅! 🌱</div>
+                    <div style="flex-shrink:0;">
+                        <button id="login-btn" class="action-btn-small" style="float:none; margin-left:8px;"><i class="fab fa-google"></i> 로그인</button>
+                        <button id="logout-btn" class="action-btn-small" style="float:none; margin-left:8px; display:none; background-color:var(--text-muted);"><i class="fas fa-sign-out-alt"></i> 로그아웃</button>
+                    </div>
                 </div>
-                
+
                 <!-- 나의 목표 섹션 -->
                 <div class="dashboard-card goal-section">
                     <div class="card-header">
                         <h3><i class="fas fa-bullseye" style="color: var(--primary-color);"></i> 나의 목표</h3>
-                        <button id="edit-goal-btn" class="icon-btn-small" title="목표 수정"><i class="fas fa-edit"></i></button>
+                        <button id="edit-goal-btn" class="icon-btn-small" title="목표 수정"><i
+                                class="fas fa-edit"></i></button>
                     </div>
                     <div id="goal-display" class="goal-content">아직 설정된 목표가 없습니다.<br>수정 버튼을 눌러 목표를 작성해보세요!</div>
                     <textarea id="goal-input" class="goal-input hidden" placeholder="이루고 싶은 목표를 적어보세요..."></textarea>
@@ -65,9 +74,11 @@
                 <div class="dashboard-card memo-section">
                     <div class="card-header">
                         <h3><i class="fas fa-comment-dots" style="color: var(--primary-color);"></i> 하루 메모</h3>
-                        <span id="memo-saved-indicator" class="saved-indicator hidden"><i class="fas fa-check"></i> 저장됨</span>
+                        <span id="memo-saved-indicator" class="saved-indicator hidden"><i class="fas fa-check"></i>
+                            저장됨</span>
                     </div>
-                    <textarea id="daily-memo" class="memo-input" placeholder="이 날의 기록이나 생각에 대해 주석이나 메모를 남겨보세요..."></textarea>
+                    <textarea id="daily-memo" class="memo-input"
+                        placeholder="이 날의 기록이나 생각에 대해 주석이나 메모를 남겨보세요..."></textarea>
                 </div>
             </main>
         </div>
@@ -78,7 +89,8 @@
                 <div class="header-title">
                     <h1>스케줄 ⏰</h1>
                     <div class="header-actions">
-                        <button id="theme-toggle-schedule" class="icon-btn theme-toggle" title="다크/라이트 모드"><i class="fas fa-moon"></i></button>
+                        <button id="theme-toggle-schedule" class="icon-btn theme-toggle" title="다크/라이트 모드"><i
+                                class="fas fa-moon"></i></button>
                     </div>
                 </div>
                 <div class="date-display-container">
@@ -102,8 +114,10 @@
                 <div class="header-title">
                     <h1 id="daily-view-title">To do list 📝</h1>
                     <div class="header-actions">
-                        <button id="theme-toggle-daily" class="icon-btn theme-toggle" title="다크/라이트 모드"><i class="fas fa-moon"></i></button>
-                        <button id="delete-day-btn" class="icon-btn" title="이 날의 플랜 전체 삭제" style="display: none;"><i class="fas fa-trash-alt"></i></button>
+                        <button id="theme-toggle-daily" class="icon-btn theme-toggle" title="다크/라이트 모드"><i
+                                class="fas fa-moon"></i></button>
+                        <button id="delete-day-btn" class="icon-btn" title="이 날의 플랜 전체 삭제" style="display: none;"><i
+                                class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
                 <div class="date-display-container">
@@ -114,21 +128,22 @@
                     </label>
                 </div>
             </header>
-            
+
             <main>
                 <div class="input-section">
-                    <button id="priority-toggle" class="icon-btn priority-btn" title="중요도 설정"><i class="far fa-star"></i></button>
+                    <button id="priority-toggle" class="icon-btn priority-btn" title="중요도 설정"><i
+                            class="far fa-star"></i></button>
                     <input type="text" id="task-input" placeholder="새로운 플랜을 작성해주세요..." autocomplete="off">
                     <button id="add-btn"><i class="fas fa-plus"></i> 추가</button>
                 </div>
-                
+
                 <div class="list-container" id="daily-list-container">
                     <!-- 중요 플랜 층 -->
                     <div id="section-high" class="priority-section hidden">
                         <h3 class="section-title"><i class="fas fa-star priority-icon"></i> 중요한 플랜</h3>
                         <ul id="task-list-high" class="task-list"></ul>
                     </div>
-                    
+
                     <!-- 일반 플랜 층 -->
                     <div id="section-normal" class="priority-section hidden">
                         <h3 class="section-title"><i class="fas fa-list-ul"></i> 일반 플랜</h3>
@@ -147,12 +162,13 @@
                 <div class="header-title">
                     <h1>전체 기록 📚</h1>
                     <div class="header-actions">
-                        <button id="theme-toggle-hist" class="icon-btn theme-toggle" title="다크/라이트 모드"><i class="fas fa-moon"></i></button>
+                        <button id="theme-toggle-hist" class="icon-btn theme-toggle" title="다크/라이트 모드"><i
+                                class="fas fa-moon"></i></button>
                     </div>
                 </div>
                 <div class="date-display">과거의 플랜들을 한눈에 확인하세요</div>
             </header>
-            
+
             <main>
                 <div id="history-container" class="history-container">
                     <!-- 날짜별 블록이 동적으로 생성됩니다 -->
@@ -181,5 +197,70 @@
         </nav>
     </div>
     <script src="script.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+            from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4yY0EEPTZZdaQimju17CiB-l20PgHvIQ",
+            authDomain: "day-plan-ac9fc.firebaseapp.com",
+            projectId: "day-plan-ac9fc",
+            storageBucket: "day-plan-ac9fc.firebasestorage.app",
+            messagingSenderId: "289940360414",
+            appId: "1:289940360414:web:9571ff5ed58f5635f3c64f",
+            measurementId: "G-X6ZH3MGDF2"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const userDisplay = document.getElementById('user-display');
+
+        if (loginBtn && logoutBtn) {
+            // 로그인
+            loginBtn.addEventListener('click', async () => {
+                try {
+                    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 로그인중';
+                    loginBtn.disabled = true;
+                    await signInWithPopup(auth, provider);
+                } catch (error) {
+                    console.error("로그인 에러:", error);
+                    alert("로그인 중 문제가 발생했습니다: " + error.message);
+                    loginBtn.innerHTML = '<i class="fab fa-google"></i> 로그인';
+                    loginBtn.disabled = false;
+                }
+            });
+
+            // 로그아웃
+            logoutBtn.addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                } catch (error) {
+                    console.error("로그아웃 에러:", error);
+                }
+            });
+        }
+
+        // 상태 감지
+        onAuthStateChanged(auth, (user) => {
+            if (userDisplay && loginBtn && logoutBtn) {
+                if (user) {
+                    userDisplay.innerText = user.displayName;
+                    loginBtn.style.display = "none";
+                    logoutBtn.style.display = "inline-block";
+                } else {
+                    userDisplay.innerText = "게스트";
+                    loginBtn.innerHTML = '<i class="fab fa-google"></i> 로그인';
+                    loginBtn.style.display = "inline-block";
+                    logoutBtn.style.display = "none";
+                    loginBtn.disabled = false;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
