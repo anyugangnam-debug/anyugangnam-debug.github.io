@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewSchedule = document.getElementById('view-schedule');
     const viewDaily = document.getElementById('view-daily');
     const viewHistory = document.getElementById('view-history');
+    const viewMotto = document.getElementById('view-motto');
     const deleteDayBtn = document.getElementById('delete-day-btn');
     const dailyViewTitle = document.getElementById('daily-view-title');
     
@@ -39,20 +40,145 @@ document.addEventListener('DOMContentLoaded', () => {
     const dateDisplay = document.getElementById('current-date');
     const dailyDatePicker = document.getElementById('daily-date-picker');
     const historyContainer = document.getElementById('history-container');
+    
+    const mainMottoDisplay = document.getElementById('main-motto-display');
+    const mainMottoInput = document.getElementById('main-motto-input');
+    const mottoListInput = document.getElementById('motto-list-input');
+    const saveMainMottoBtn = document.getElementById('save-main-motto-btn');
+    const mottoSavedIndicator = document.getElementById('motto-saved-indicator');
 
-    // 테마 설정 (UI이므로 로컬스토리지 유지)
-    const themeToggles = document.querySelectorAll('.theme-toggle');
+    // =========================================================
+    // 설정 및 테마, 사운드, 레이아웃 로직
+    // =========================================================
+    const settingsToggles = document.querySelectorAll('.settings-toggle');
+    const settingsModal = document.getElementById('settings-modal');
+    const closeSettingsBtn = document.querySelector('.close-settings-btn');
+    const settingDarkMode = document.getElementById('setting-dark-mode');
+    const settingSound = document.getElementById('setting-sound');
+    const settingVolume = document.getElementById('setting-volume');
+    const volumeControlRow = document.getElementById('volume-control-row');
+    const settingDesktopMode = document.getElementById('setting-desktop-mode');
+
     let isDark = localStorage.getItem('haruTheme') === 'dark';
+    let isSoundOn = localStorage.getItem('haruSound') !== 'off'; // 기본값 켜짐
+    let soundVolume = parseFloat(localStorage.getItem('haruSoundVolume'));
+    if (isNaN(soundVolume)) soundVolume = 0.5; // 기본 볼륨 50%
+    let isDesktopMode = localStorage.getItem('haruLayout') === 'desktop'; // 기본값 모바일
+
+    // 모달 토글
+    settingsToggles.forEach(btn => btn.addEventListener('click', () => {
+        settingsModal.classList.remove('hidden');
+    }));
+    if (closeSettingsBtn) {
+        closeSettingsBtn.addEventListener('click', () => {
+            settingsModal.classList.add('hidden');
+        });
+    }
+    // 모달 바깥 클릭 시 닫기
+    if (settingsModal) {
+        settingsModal.addEventListener('click', (e) => {
+            if (e.target === settingsModal) settingsModal.classList.add('hidden');
+        });
+    }
+
+    // 다크모드 적용
     const applyTheme = () => {
         document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        themeToggles.forEach(btn => btn.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>');
+        if (settingDarkMode) settingDarkMode.checked = isDark;
     };
-    themeToggles.forEach(btn => btn.addEventListener('click', () => {
-        isDark = !isDark;
-        localStorage.setItem('haruTheme', isDark ? 'dark' : 'light');
-        applyTheme();
-    }));
+    if (settingDarkMode) {
+        settingDarkMode.addEventListener('change', (e) => {
+            isDark = e.target.checked;
+            localStorage.setItem('haruTheme', isDark ? 'dark' : 'light');
+            applyTheme();
+        });
+    }
     applyTheme();
+
+    // 사운드 적용
+    if (settingSound) {
+        settingSound.checked = isSoundOn;
+        if (volumeControlRow) volumeControlRow.style.display = isSoundOn ? 'flex' : 'none';
+        
+        settingSound.addEventListener('change', (e) => {
+            isSoundOn = e.target.checked;
+            localStorage.setItem('haruSound', isSoundOn ? 'on' : 'off');
+            if (volumeControlRow) volumeControlRow.style.display = isSoundOn ? 'flex' : 'none';
+        });
+    }
+
+    if (settingVolume) {
+        settingVolume.value = soundVolume;
+        settingVolume.addEventListener('input', (e) => {
+            soundVolume = parseFloat(e.target.value);
+            localStorage.setItem('haruSoundVolume', soundVolume);
+        });
+    }
+
+    // 데스크탑 모드 적용
+    const applyLayout = () => {
+        if (isDesktopMode) {
+            document.body.classList.add('desktop-layout');
+        } else {
+            document.body.classList.remove('desktop-layout');
+        }
+        if (settingDesktopMode) settingDesktopMode.checked = isDesktopMode;
+    };
+    if (settingDesktopMode) {
+        settingDesktopMode.addEventListener('change', (e) => {
+            isDesktopMode = e.target.checked;
+            localStorage.setItem('haruLayout', isDesktopMode ? 'desktop' : 'mobile');
+            applyLayout();
+        });
+    }
+    applyLayout();
+
+    // 글로벌 효과음 (Web Audio API) 로직 - 음정(음색) 없는 순수 마우스 클릭 소리
+    function playClickSound() {
+        if (!isSoundOn || soundVolume <= 0) return;
+        if (!window.audioCtx) window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (window.audioCtx.state === 'suspended') window.audioCtx.resume();
+        try {
+            // 완전히 음정이 없는 백색소음(White Noise)을 아주 짧게 재생해 기계식 클릭 구현
+            const bufferSize = window.audioCtx.sampleRate * 0.01; // 10ms 길이 버퍼
+            const buffer = window.audioCtx.createBuffer(1, bufferSize, window.audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            
+            const noiseSrc = window.audioCtx.createBufferSource();
+            noiseSrc.buffer = buffer;
+            
+            // 저주파를 깎아내어 둔탁한 소리가 아닌 날카로운 플라스틱/스위치 느낌 유도
+            const filter = window.audioCtx.createBiquadFilter();
+            filter.type = 'highpass';
+            filter.frequency.value = 3500;
+            
+            const gainNode = window.audioCtx.createGain();
+            
+            // 0.005초(5ms) 만에 볼륨을 급격히 0으로 떨어뜨려 순수한 '딸깍' 충격음만 남김
+            gainNode.gain.setValueAtTime(soundVolume * 1.5, window.audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, window.audioCtx.currentTime + 0.005);
+            
+            noiseSrc.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(window.audioCtx.destination);
+            
+            noiseSrc.start(window.audioCtx.currentTime);
+            noiseSrc.stop(window.audioCtx.currentTime + 0.01);
+        } catch (e) {
+            console.error('Audio play error:', e);
+        }
+    }
+
+    document.addEventListener('click', (e) => {
+        // 인터랙션 요소 클릭 시 효과음 재생
+        if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.widget-btn') || e.target.closest('.history-block') || e.target.matches('input[type="checkbox"]')) {
+            playClickSound();
+        }
+    });
 
     const getTodayString = () => {
         const today = new Date();
@@ -73,7 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
         plans: {},
         schedule: {},
         memos: {},
-        goal: ''
+        goal: '',
+        motto: { main: '', list: '' }
     };
 
     // 기존 localStorage 찌꺼기 청소
@@ -90,7 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
             plans: appData.plans || {},
             schedule: appData.schedule || {},
             memos: appData.memos || {},
-            goal: appData.goal || ''
+            goal: appData.goal || '',
+            motto: appData.motto || { main: '', list: '' }
         };
     };
 
@@ -101,7 +229,8 @@ document.addEventListener('DOMContentLoaded', () => {
             plans: {},
             schedule: {},
             memos: {},
-            goal: ''
+            goal: '',
+            motto: { main: '', list: '' }
         };
 
         if (data && typeof data === 'object') {
@@ -109,6 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
             appData.schedule = typeof data.schedule === 'object' && data.schedule !== null ? data.schedule : {};
             appData.memos = typeof data.memos === 'object' && data.memos !== null ? data.memos : {};
             appData.goal = typeof data.goal === 'string' ? data.goal : '';
+            appData.motto = typeof data.motto === 'object' && data.motto !== null ? data.motto : { main: '', list: '' };
         }
 
         // 기본값 보정 (앱 깨짐 방어)
@@ -237,6 +367,23 @@ document.addEventListener('DOMContentLoaded', () => {
         scheduleDateDisplay.textContent = formatted;
         scheduleDatePicker.value = currentActiveDate;
         dailyMemo.value = appData.memos[currentActiveDate] || '';
+        
+        const defaultGreeting = document.getElementById('default-greeting');
+        const mottoGreeting = document.getElementById('motto-greeting');
+        
+        if (mainMottoDisplay && defaultGreeting && mottoGreeting) {
+            if (appData.motto && appData.motto.main && appData.motto.main.trim() !== '') {
+                mainMottoDisplay.textContent = `"${appData.motto.main}"`;
+                defaultGreeting.style.display = 'none';
+                mottoGreeting.style.display = 'block';
+                mottoGreeting.classList.remove('hidden');
+            } else {
+                defaultGreeting.style.display = 'block';
+                mottoGreeting.style.display = 'none';
+                mottoGreeting.classList.add('hidden');
+                mainMottoDisplay.textContent = '';
+            }
+        }
     };
 
     // --- 목표 설정 뷰 ---
@@ -547,17 +694,51 @@ document.addEventListener('DOMContentLoaded', () => {
         historyContainer.appendChild(gridDiv);
     };
 
+    // --- 나의 모토(신념) 뷰 ---
+    if (saveMainMottoBtn) {
+        saveMainMottoBtn.addEventListener('click', () => {
+            if (!appData.motto) appData.motto = { main: '', list: '' };
+            appData.motto.main = mainMottoInput.value;
+            saveCurrentState();
+            setDashAndScheduleHeader();
+            
+            saveMainMottoBtn.innerHTML = '<i class="fas fa-check"></i>';
+            saveMainMottoBtn.style.backgroundColor = 'var(--success-color)';
+            setTimeout(() => {
+                saveMainMottoBtn.innerHTML = '저장';
+                saveMainMottoBtn.style.backgroundColor = 'var(--primary-color)';
+            }, 1000);
+        });
+    }
+
+    if (mottoListInput) {
+        let mottoListTimeout;
+        mottoListInput.addEventListener('input', (e) => {
+            if (!appData.motto) appData.motto = { main: '', list: '' };
+            appData.motto.list = e.target.value;
+            
+            clearTimeout(mottoListTimeout);
+            mottoListTimeout = setTimeout(() => {
+                saveCurrentState();
+                mottoSavedIndicator.classList.remove('hidden');
+                setTimeout(() => mottoSavedIndicator.classList.add('hidden'), 2000);
+            }, 800);
+        });
+    }
+
     // --- 통합 네비게이션 제어 ---
     const switchView = (targetView) => {
         viewDashboard.classList.add('hidden');
         viewSchedule.classList.add('hidden');
         viewDaily.classList.add('hidden');
         viewHistory.classList.add('hidden');
+        if (viewMotto) viewMotto.classList.add('hidden');
         
         viewDashboard.classList.remove('active');
         viewSchedule.classList.remove('active');
         viewDaily.classList.remove('active');
         viewHistory.classList.remove('active');
+        if (viewMotto) viewMotto.classList.remove('active');
         
         navItems.forEach(item => item.classList.remove('active'));
         const activeNav = document.querySelector(`.bottom-nav .nav-item[data-target="${targetView}"]`);
@@ -575,6 +756,13 @@ document.addEventListener('DOMContentLoaded', () => {
             renderHourlySchedule();
             viewSchedule.classList.remove('hidden');
             viewSchedule.classList.add('active');
+        } else if (targetView === 'motto') {
+            if (mainMottoInput && appData.motto) mainMottoInput.value = appData.motto.main || '';
+            if (mottoListInput && appData.motto) mottoListInput.value = appData.motto.list || '';
+            if (viewMotto) {
+                viewMotto.classList.remove('hidden');
+                viewMotto.classList.add('active');
+            }
         } else {
             setDashAndScheduleHeader();
             viewDashboard.classList.remove('hidden');

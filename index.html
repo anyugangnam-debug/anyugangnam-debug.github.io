@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>하루플랜 | 하루 계획 관리 앱</title>
-    <meta name="description" content="하루플랜은 하루 계획을 효율적으로 관리할 수 있는 스마트 데일리 플래너 웹앱입니다. 스케줄을 기록하고 To do 리스트를 활용해 매일의 생산성을 높여보세요.">
+    <title>하루플랜 | 하루를 효율적으로 관리하는 웹 앱</title>
+    <meta name="description" content="하루플랜은 일정, To do, 기록을 통해 생산성을 높이는 웹 앱입니다.">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,9 +22,10 @@
             <header>
                 <div class="header-title">
                     <h1>내 하루 🌱</h1>
-                    <div class="header-actions">
-                        <button id="theme-toggle-dash" class="icon-btn theme-toggle" title="다크/라이트 모드"><i
-                                class="fas fa-moon"></i></button>
+                    <div class="header-actions" style="display: flex; gap: 4px; align-items: center;">
+                        <button id="login-btn" class="action-btn-small" style="padding: 6px 10px; font-size: 0.8rem; border-radius: 12px;"><i class="fab fa-google"></i> 로그인</button>
+                        <button id="logout-btn" class="action-btn-small" style="padding: 6px 10px; font-size: 0.8rem; border-radius: 12px; display: none; background-color: var(--text-muted);"><i class="fas fa-sign-out-alt"></i></button>
+                        <button class="icon-btn settings-toggle" title="설정"><i class="fas fa-cog"></i></button>
                     </div>
                 </div>
                 <div class="date-display-container">
@@ -37,14 +38,13 @@
                 </div>
             </header>
             <main class="dashboard-main">
-                <div class="greeting-message" style="display:flex; justify-content:space-between; align-items:center; text-align:left;">
-                    <div>
+                <div class="greeting-message" style="display:flex; justify-content:center; align-items:center; text-align:center; min-height: 80px;" id="greeting-container">
+                    <div id="default-greeting">
                         <span id="auth-status-badge" style="display:inline-block; font-size: 0.75rem; padding: 2px 8px; border-radius: 12px; margin-bottom: 4px; background: var(--border-color); color: var(--text-muted);">게스트 모드</span><br>
-                        <span id="user-display" style="font-weight:700;">게스트</span>님,<br>오늘도 화이팅! 🌱
+                        <span id="user-display" style="font-weight:700;">게스트</span>님, 오늘도 화이팅! 🌱
                     </div>
-                    <div style="flex-shrink:0;">
-                        <button id="login-btn" class="action-btn-small" style="float:none; margin-left:8px;"><i class="fab fa-google"></i> 로그인</button>
-                        <button id="logout-btn" class="action-btn-small" style="float:none; margin-left:8px; display:none; background-color:var(--text-muted);"><i class="fas fa-sign-out-alt"></i> 로그아웃</button>
+                    <div id="motto-greeting" class="hidden">
+                        <span id="main-motto-display" style="font-size: 1.4rem; font-weight: 800; color: var(--text-main); line-height: 1.4; word-break: keep-all;"></span>
                     </div>
                 </div>
 
@@ -70,6 +70,11 @@
                         <div class="widget-icon">📝</div>
                         <div class="widget-title">To do list</div>
                         <div class="widget-desc">오늘 할 일 체크!</div>
+                    </button>
+                    <button class="widget-btn" data-target="motto">
+                        <div class="widget-icon">✨</div>
+                        <div class="widget-title">나의 모토</div>
+                        <div class="widget-desc">인생의 나침반</div>
                     </button>
                     <button class="widget-btn" data-target="history">
                         <div class="widget-icon">📚</div>
@@ -97,8 +102,7 @@
                 <div class="header-title">
                     <h1>스케줄 ⏰</h1>
                     <div class="header-actions">
-                        <button id="theme-toggle-schedule" class="icon-btn theme-toggle" title="다크/라이트 모드"><i
-                                class="fas fa-moon"></i></button>
+                        <button class="icon-btn settings-toggle" title="설정"><i class="fas fa-cog"></i></button>
                     </div>
                 </div>
                 <div class="date-display-container">
@@ -122,8 +126,7 @@
                 <div class="header-title">
                     <h1 id="daily-view-title">To do list 📝</h1>
                     <div class="header-actions">
-                        <button id="theme-toggle-daily" class="icon-btn theme-toggle" title="다크/라이트 모드"><i
-                                class="fas fa-moon"></i></button>
+                        <button class="icon-btn settings-toggle" title="설정"><i class="fas fa-cog"></i></button>
                         <button id="delete-day-btn" class="icon-btn" title="이 날의 플랜 전체 삭제" style="display: none;"><i
                                 class="fas fa-trash-alt"></i></button>
                     </div>
@@ -170,8 +173,7 @@
                 <div class="header-title">
                     <h1>전체 기록 📚</h1>
                     <div class="header-actions">
-                        <button id="theme-toggle-hist" class="icon-btn theme-toggle" title="다크/라이트 모드"><i
-                                class="fas fa-moon"></i></button>
+                        <button class="icon-btn settings-toggle" title="설정"><i class="fas fa-cog"></i></button>
                     </div>
                 </div>
                 <div class="date-display">과거의 플랜들을 한눈에 확인하세요</div>
@@ -182,6 +184,88 @@
                     <!-- 날짜별 블록이 동적으로 생성됩니다 -->
                 </div>
             </main>
+        </div>
+
+        <!-- 모토 뷰: 인생의 신념 관리 -->
+        <div id="view-motto" class="view hidden">
+            <header>
+                <div class="header-title">
+                    <h1>나의 모토 ✨</h1>
+                    <div class="header-actions">
+                        <button class="icon-btn settings-toggle" title="설정"><i class="fas fa-cog"></i></button>
+                    </div>
+                </div>
+                <div class="date-display">나침반이 되어줄 인생의 신념들</div>
+            </header>
+            <main style="display: flex; flex-direction: column; gap: 16px;">
+                <!-- 대표 모토 -->
+                <div class="dashboard-card" style="flex-shrink: 0; padding: 16px;">
+                    <div class="card-header" style="margin-bottom: 8px;">
+                        <h3 style="color: var(--primary-color);"><i class="fas fa-crown"></i> 대표 모토 (홈 표시)</h3>
+                        <button id="save-main-motto-btn" class="action-btn-small" style="padding: 6px 12px; margin-top: -4px;">저장</button>
+                    </div>
+                    <input type="text" id="main-motto-input" class="goal-input" style="min-height: 40px; margin-bottom: 0;" placeholder="ex) 흔들리지 않고 피는 꽃은 없다">
+                </div>
+
+                <!-- 세부 신념 리스트 -->
+                <div class="dashboard-card" style="flex: 1; display: flex; flex-direction: column; padding: 16px;">
+                    <div class="card-header">
+                        <h3><i class="fas fa-list-ul" style="color: var(--text-muted);"></i> 나의 신념 리스트</h3>
+                        <span id="motto-saved-indicator" class="saved-indicator hidden"><i class="fas fa-check"></i> 저장됨</span>
+                    </div>
+                    <textarea id="motto-list-input" class="memo-input" style="flex: 1; height: 100%; border: none; background: transparent; padding: 0;" placeholder="평생 간직하고 싶은 자신의 신념, 가치관, 명언 등을 자유롭게 적어보세요..."></textarea>
+                </div>
+            </main>
+        </div>
+
+        <!-- 설정 모달 -->
+        <div id="settings-modal" class="modal-overlay hidden">
+            <div class="modal-content settings-content">
+                <div class="modal-header">
+                    <h2>설정 <i class="fas fa-cog" style="color:var(--primary-color);"></i></h2>
+                    <button class="icon-btn close-settings-btn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-info">
+                        <strong>다크 모드</strong>
+                        <span>어두운 화면으로 눈을 편안하게</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-dark-mode">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-info">
+                        <strong>효과음</strong>
+                        <span>버튼 클릭 시 소리 켜기/끄기</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-sound" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="settings-row" id="volume-control-row">
+                    <div class="settings-info" style="width: 100%;">
+                        <strong>효과음 크기</strong>
+                        <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                            <i class="fas fa-volume-down" style="color: var(--text-muted);"></i>
+                            <input type="range" id="setting-volume" min="0" max="1" step="0.1" value="0.5" style="flex: 1; accent-color: var(--primary-color); height: 6px; cursor: pointer;">
+                            <i class="fas fa-volume-up" style="color: var(--text-muted);"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-row">
+                    <div class="settings-info">
+                        <strong>데스크탑(PC) 화면 모드</strong>
+                        <span>컴퓨터 모니터에 맞게 화면을 넓고 편안하게</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="setting-desktop-mode">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
         </div>
 
         <!-- 하단 네비게이션 -->
@@ -197,6 +281,10 @@
             <button class="nav-item" data-target="daily">
                 <i class="fas fa-check-square"></i>
                 <span>To do</span>
+            </button>
+            <button class="nav-item" data-target="motto">
+                <i class="fas fa-star"></i>
+                <span>모토</span>
             </button>
             <button class="nav-item" data-target="history">
                 <i class="fas fa-book-open"></i>
@@ -334,8 +422,11 @@
             <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">홈</a>
             <a href="about.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">소개</a>
             <a href="privacy.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">개인정보처리방침</a>
+            <a href="contact.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">문의하기</a> <!-- FIX: 문의하기 추가 -->
             <a href="blog1.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">효율적인 계획 관리</a>
             <a href="blog2.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">To do 리스트 활용법</a>
+            <a href="blog3.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">시간 관리 방식</a>
+            <a href="blog4.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">계획 유지하기</a>
         </div>
         <p style="margin-top: 15px;">&copy; 하루플랜. All rights reserved.</p>
         

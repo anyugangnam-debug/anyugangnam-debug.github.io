@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>하루플랜 | 하루를 효율적으로 관리하는 웹 앱</title>
+    <meta name="description" content="하루플랜은 일정, To do, 기록을 통해 생산성을 높이는 웹 앱입니다.">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body data-theme="light">
+    <script>
+        if (localStorage.getItem('haruTheme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+        }
+    </script>
+    <div class="app-container" style="overflow-y: auto; display: block; padding: 20px;">
+        <header style="margin-bottom: 20px; text-align: left;">
+            <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
+                <i class="fas fa-arrow-left"></i> 돌아가기
+            </a>
+            <h1 style="margin-top: 20px; font-size: 1.5rem;">문의하기 ✉️</h1>
+        </header>
+        
+        <main class="dashboard-card" style="line-height: 1.6; text-align: center;">
+            <p>하루플랜 서비스 관련 문의, 오류 제보, 개선 요청 등을 언제든지 환영합니다.</p>
+            <p style="margin-bottom: 25px; color: var(--text-muted);">이메일: tatakuid@gmail.com</p>
+            
+            <a href="mailto:tatakuid@gmail.com?subject=하루플랜 문의&body=문의 내용을 입력해주세요" style="display: inline-block; background-color: var(--primary-color); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">
+                <i class="fas fa-paper-plane"></i> 이메일로 문의하기
+            </a>
+        </main>
+        
+        <footer style="margin-top: 30px; text-align: center; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 20px;">
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
+                <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">홈</a>
+                <a href="about.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">소개</a>
+                <a href="privacy.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">개인정보처리방침</a>
+                <a href="contact.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">문의하기</a>
+            </div>
+            <p>&copy; 하루플랜. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

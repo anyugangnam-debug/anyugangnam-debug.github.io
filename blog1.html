@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>효율적인 하루 계획을 세우는 3가지 노하우 | 하루플랜</title>
-    <meta name="description" content="생산성을 높이고 시간을 낭비하지 않는 하루 계획 세우기 방법. 목표 설정과 우선순위 관리를 통해 하루를 지배해보세요.">
+    <title>하루플랜 | 하루를 효율적으로 관리하는 웹 앱</title>
+    <meta name="description" content="하루플랜은 일정, To do, 기록을 통해 생산성을 높이는 웹 앱입니다.">
     <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body data-theme="light">
+    <script>
+        if (localStorage.getItem('haruTheme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+        }
+    </script>
+    <!-- Same body as before, just footer updated -->
     <div class="app-container" style="overflow-y: auto; display: block; padding: 20px;">
         <header style="margin-bottom: 20px; text-align: left;">
             <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
@@ -18,19 +24,14 @@
             </a>
             <h1 style="margin-top: 20px; font-size: 1.5rem;">효율적인 하루 계획 세우기 ⏰</h1>
         </header>
-        
         <main class="dashboard-card" style="line-height: 1.7;">
             <p>현대인에게 남겨진 24시간은 누구에게나 평등하지만, 그 시간을 어떻게 분배하느냐에 따라 하루의 성취는 완전히 달라집니다. 오늘은 지치지 않으면서도 높은 생산성을 유지하는 효율적인 계획 노하우 3가지를 소개합니다.</p>
-            
             <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">1. 거창한 계획보다 '명확한 한 가지 목표' 설정</h2>
             <p>계획을 세울 때 흔히 하는 실수는 '너무 많은 일'을 한꺼번에 해내려고 하는 것입니다. 하루에 소화할 수 있는 에너지는 한정적이기 때문에, 아침에 눈을 뜨면 "오늘 반드시 끝마쳐야 할 단 하나의 중요한 일은 무엇인가?"를 고민해보세요. 여러 가지 리스트에 압도되지 않고, 이 중요한 목표 하나만 완수해도 그 날은 '성공한 하루'가 될 수 있습니다.</p>
-
             <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">2. 큰 덩어리의 시간(Time Blocking) 활용하기</h2>
             <p>매시간마다 촘촘하게 계획을 잡는 것은 예상치 못한 변수가 생겼을 때 쉽게 포기하게 만듭니다. 가장 효과적인 방법은 큰 덩어리의 시간을 예약해두는 '타임 블로킹(Time Blocking)'입니다. 예를 들어 "오전 10시부터 12시까지는 딴짓 없이 중요한 업무 A만 집중한다"라고 시간 구역을 할당해보세요. 휴식 시간 또한 명확히 블로킹하는 것이 핵심입니다.</p>
-
             <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">3. 저녁 5분 회고의 힘</h2>
             <p>하루를 마치고 잠들기 전 시간을 내어, 오늘 내 계획의 달성률(%)이 얼마였는지, 어떤 요소가 방해되었는지 짧게 메모하는 습관을 들여보세요. <strong>하루플랜(HaruPlan)</strong> 앱의 '하루 요약 메모'나 과거 히스토리를 돌아보는 기능이 바로 이 회고를 위해 고안되었습니다. 반복되는 실수를 바로잡고, 내일의 우선순위를 미리 정해둘 수 있습니다.</p>
-
             <p style="margin-top: 25px;"><strong>결론:</strong> 시간 관리는 스스로를 조이는 족쇄가 아니라, 여유로우면서도 주도적인 하루를 만들기 위한 최고의 도구입니다. 지금 바로 당신의 하루를 설계해보세요!</p>
         </main>
         
@@ -39,8 +40,7 @@
                 <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">홈</a>
                 <a href="about.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">소개</a>
                 <a href="privacy.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">개인정보처리방침</a>
-                <a href="blog1.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">효율적인 계획 관리</a>
-                <a href="blog2.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">To do 리스트 활용법</a>
+                <a href="contact.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">문의하기</a>
             </div>
             <p>&copy; 하루플랜. All rights reserved.</p>
         </footer>

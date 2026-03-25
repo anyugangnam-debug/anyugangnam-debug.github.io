@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To do 리스트(투두 리스트) 100% 활용하는 방법 | 하루플랜</title>
-    <meta name="description" content="항상 적기만 하고 끝내지 못했던 To do 리스트, 어떻게 써야 성과를 높일 수 있을까요? 투두 리스트의 올바른 활용 방법을 확인해보세요.">
+    <title>하루플랜 | 하루를 효율적으로 관리하는 웹 앱</title>
+    <meta name="description" content="하루플랜은 일정, To do, 기록을 통해 생산성을 높이는 웹 앱입니다.">
     <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body data-theme="light">
+    <script>
+        if (localStorage.getItem('haruTheme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+        }
+    </script>
+    <!-- Same body as before, footer updated -->
     <div class="app-container" style="overflow-y: auto; display: block; padding: 20px;">
         <header style="margin-bottom: 20px; text-align: left;">
             <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
@@ -18,19 +24,14 @@
             </a>
             <h1 style="margin-top: 20px; font-size: 1.5rem;">To do 리스트 100% 활용법 📝</h1>
         </header>
-        
         <main class="dashboard-card" style="line-height: 1.7;">
             <p>매일 아침 'To do 리스트(할 일 목록)'를 열심히 적지만 정작 체크표시(✔)로 마무리되는 항목이 손에 꼽으신가요? 단순한 메모장이 되어버린 To do 리스트를 강력한 생산성 도구로 바꾸는 세 가지 방법을 알아봅시다.</p>
-            
             <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">1. 두루뭉술한 동사가 아닌 '구체적 행동'으로 적기</h2>
             <p>"보고서 작성하기"보다는 "보고서 개요 A4 1장 작성 및 팀장님께 초안 메일 전송하기"가 낫습니다. 할 일을 읽었을 때 내 몸이 즉각적으로 어떤 행동을 실행해야 할지 직관적으로 떠오를 수 있도록 쪼개서 적는 것이 가장 중요합니다. 태스크가 적절히 작게 나뉘어 있을수록 체크하는 재미와 성취감도 배가 됩니다.</p>
-
             <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">2. '중요도'에 따라 영역을 엄격히 분리하기</h2>
             <p>모든 할 일이 똑같은 중요도를 가지는 것은 아닙니다. 어떤 리스트는 데드라인이 임박해서 반드시 쳐내야 하는 것이고, 어떤 것은 시간이 남을 때 해도 좋은 것들입니다. 중요한 항목은 반드시 눈에 가장 잘 띄는 곳으로 올리세요. <strong>하루플랜</strong>에서 지원하는 [🌟 별표 기능]을 활용하여 최상단에 고정하는 것도 이 때문입니다.</p>
-
             <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">3. 미루기의 달인이라면 "2분 법칙"을 쓰세요</h2>
             <p>투두 리스트를 적다 보면, '단순 메일 회신', '달력 확인', '책상 위 서류 정리'와 같이 행위 자체가 2분도 채 안 걸리는 항목들이 있습니다. 이런 자잘한 일들은 굳이 목록에 남기고 스트레스받기보다는 발견한 즉시 2분 안에 처리해버리는 것이 효율적입니다.</p>
-
             <p style="margin-top: 25px;"><strong>결론:</strong> 적혀있는 일을 지워나가는 과정은 우리 뇌에 도파민을 분비시킵니다. 올바른 방법으로 리스트를 작성하고, 체크표시의 쾌감을 통해 여러분의 일상에 긍정적인 파동을 일으켜 보세요!</p>
         </main>
         
@@ -39,8 +40,7 @@
                 <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">홈</a>
                 <a href="about.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">소개</a>
                 <a href="privacy.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">개인정보처리방침</a>
-                <a href="blog1.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">효율적인 계획 관리</a>
-                <a href="blog2.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">To do 리스트 활용법</a>
+                <a href="contact.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">문의하기</a>
             </div>
             <p>&copy; 하루플랜. All rights reserved.</p>
         </footer>

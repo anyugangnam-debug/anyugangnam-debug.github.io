@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>하루플랜 | 하루를 효율적으로 관리하는 웹 앱</title>
+    <meta name="description" content="하루플랜은 일정, To do, 기록을 통해 생산성을 높이는 웹 앱입니다.">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body data-theme="light">
+    <script>
+        if (localStorage.getItem('haruTheme') === 'dark') {
+            document.body.setAttribute('data-theme', 'dark');
+        }
+    </script>
+    <div class="app-container" style="overflow-y: auto; display: block; padding: 20px;">
+        <header style="margin-bottom: 20px; text-align: left;">
+            <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
+                <i class="fas fa-arrow-left"></i> 돌아가기
+            </a>
+            <h1 style="margin-top: 20px; font-size: 1.5rem;">시간관리를 잘하는 사람들의 실전 루틴 ⏳</h1>
+        </header>
+        <main class="dashboard-card" style="line-height: 1.7;">
+            <p>우리는 종종 시간이 부족하다고 불평하지만, 사실 부족한 것은 시간이 아니라 '집중력'과 '에너지'일 때가 많습니다. 성공적으로 시간관리를 해내는 사람들은 단순히 빼곡한 일정을 채우는 것이 아니라, 자신만의 확실한 루틴을 가지고 에너지를 통제합니다. 실전에서 바로 적용할 수 있는 강력한 시간관리 루틴들을 소개합니다.</p>
+            
+            <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">1. 아침 15분, 하루 설계 골든타임</h2>
+            <p>많은 시간관리 전문가들은 아침에 일어난 직후 15분의 중요성을 강조합니다. 무작정 일을 시작하거나 스마트폰부터 확인하는 대신, 오늘 하루의 흐름을 머릿속으로 그려보는 시간을 가지세요. 하루플랜의 시간 단위 스케줄 기능에 오늘 처리해야 할 과제 블록을 배치하면서, 무엇을 먼저 해야 할지 시각화하는 과정은 뇌에 강력한 동기부여를 제공합니다.</p>
+
+            <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">2. 가장 어려운 일을 아침에 해치우는 방어 기제</h2>
+            <p>마크 트웨인의 명언 중 "아침에 일어나자마자 살아있는 개구리를 먹어라"라는 말이 있습니다. 여기서 개구리란 가장 하기 싫고, 가장 부담스러우며, 가장 어려운 일을 의미합니다. 우리는 무의식적으로 어려운 일을 뒤로 미루려 하지만, 하루 중 가장 의지력과 에너지가 충만한 아침 시간에 그 일을 먼저 끝내버리면 이후의 시간들은 놀라울 정도로 평화롭고 순조롭게 풀립니다. 하루플랜의 우선순위 별표(🌟) 기능을 활용하여 오늘 먹어야 할 가장 큰 개구리를 고정해보세요.</p>
+
+            <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">3. 포모도로(Pomodoro) 기법으로 초집중력 끌어올리기</h2>
+            <p>사람의 평균적인 최대 집중 시간은 생각보다 짧습니다. 25분간 한 치의 딴짓도 없이 완벽히 몰입한 후, 5분 동안 확실히 휴식하는 포모도로 기법은 번아웃을 방지하고 작업 효율을 극대화합니다. 책상 앞에 멍하니 앉아 3시간을 보내는 것보다, 타이머를 맞추고 25분씩 쪼개어 달리는 것이 결과물의 퀄리티를 폭발적으로 높여줍니다.</p>
+            
+            <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">4. 여백의 철학: 비워두는 시간 만들기</h2>
+            <p>일정을 시간 단위로 촘촘히 짠다고 해서 무조건 생산성이 오르진 않습니다. 뜻밖의 미팅, 급한 연락 등 변수는 늘 존재하기 때문입니다. 하루 일정 중 최소 1시간은 아무것도 채워 넣지 않는 완충 시간(Buffer Time)으로 설계하세요. 일정이 딜레이되었을 때 이를 흡수하는 훌륭한 안전망이 되어줄 것입니다.</p>
+
+            <p style="margin-top: 25px;"><strong>결론:</strong> 시간관리는 스스로를 옭아매는 사슬이 아닙니다. 내게 소중한 저녁 휴식 시간, 혹은 가족과의 달콤한 주말을 완벽하게 확보하기 위해 낮 시간을 밀도 있게 쓰는 과정입니다. 오늘 하루부터 작은 루틴을 적용해보세요.</p>
+        </main>
+        
+        <footer style="margin-top: 30px; text-align: center; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 20px;">
+            <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
+                <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">홈</a>
+                <a href="about.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">소개</a>
+                <a href="privacy.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">개인정보처리방침</a>
+                <a href="contact.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">문의하기</a>
+            </div>
+            <p>&copy; 하루플랜. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
