@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // =========================================================
-    // 기존 DOM 요소 선택 (화면 구조 유지)
+    // 기존 DOM 요소 선택 (화면 구조 및 ID, class 유지)
     // =========================================================
     const viewDashboard = document.getElementById('view-dashboard');
     const viewSchedule = document.getElementById('view-schedule');
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dailyDatePicker = document.getElementById('daily-date-picker');
     const historyContainer = document.getElementById('history-container');
 
-    // 테마는 UI 환경 설정이므로 로컬스토리지 유지
+    // 테마 설정 (UI이므로 로컬스토리지 유지)
     const themeToggles = document.querySelectorAll('.theme-toggle');
     let isDark = localStorage.getItem('haruTheme') === 'dark';
     const applyTheme = () => {
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isHighPriority = false;
 
     // =========================================================
-    // 1. 앱 전체 데이터 단일 상태 객체 (요구사항 1)
+    // 1. 앱 전체 데이터 단일 상태 관리 객체
     // =========================================================
     let currentUid = null;
     let appData = {
@@ -76,16 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
         goal: ''
     };
 
-    // 기존 찌꺼기 localStorage 정리 (요구사항 5: 로컬스토리지 사용 금지)
+    // 기존 localStorage 찌꺼기 청소
     ['haruPlans', 'haruSchedule', 'haruMemos', 'haruGoal', 'haruIsLoggedIn'].forEach(k => {
         try { localStorage.removeItem(k); } catch(e) {}
     });
 
     // =========================================================
-    // 2. 데이터 저장/불러오기 분리 모듈 로직 (요구사항 2, 3, 4, 9)
+    // 2. 저장/불러오기 로직 분리
     // =========================================================
 
-    // 현재 상태 반환본 생성
     const getCurrentAppData = () => {
         return {
             plans: appData.plans || {},
@@ -95,21 +94,30 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
-    // 주입된 데이터를 앱 상태에 안전하게 덮어쓰기 (방어 코드 포함)
+    // FIX: applyAppData(data) 덮어쓰기 로직 (이전 데이터 흔적 완전 초기화 후 적용)
     const applyAppData = (data) => {
-        if (!data) data = {}; // null 방어
-        appData.plans = typeof data.plans === 'object' && data.plans !== null ? data.plans : {};
-        appData.schedule = typeof data.schedule === 'object' && data.schedule !== null ? data.schedule : {};
-        appData.memos = typeof data.memos === 'object' && data.memos !== null ? data.memos : {};
-        appData.goal = typeof data.goal === 'string' ? data.goal : '';
+        // 새 데이터 적용 전에 이전 appData 흔적이 남지 않도록 완전 초기화
+        appData = {
+            plans: {},
+            schedule: {},
+            memos: {},
+            goal: ''
+        };
 
-        // 기본값 보정 (오늘 날짜의 plans 배열 보장)
+        if (data && typeof data === 'object') {
+            appData.plans = typeof data.plans === 'object' && data.plans !== null ? data.plans : {};
+            appData.schedule = typeof data.schedule === 'object' && data.schedule !== null ? data.schedule : {};
+            appData.memos = typeof data.memos === 'object' && data.memos !== null ? data.memos : {};
+            appData.goal = typeof data.goal === 'string' ? data.goal : '';
+        }
+
+        // 기본값 보정 (앱 깨짐 방어)
         if (!appData.plans[todayStr]) appData.plans[todayStr] = [];
     };
 
-    // 상태를 저장 (게스트는 sessionStorage, 로그인은 Firebase 이벤트 전송)
+    // FIX: saveCurrentState() 점검 - 로그인 여부에 따른 분리
     const saveCurrentState = () => {
-        // 불필요한 빈 배열/문자열 자동 정리
+        // 불필요한 빈 배열/빈 문자열 메모리에서 실시간 자동 청소
         Object.keys(appData.plans).forEach(date => {
             if (date !== todayStr && appData.plans[date].length === 0) delete appData.plans[date];
         });
@@ -126,87 +134,67 @@ document.addEventListener('DOMContentLoaded', () => {
         const stateToSave = getCurrentAppData();
 
         if (currentUid !== null) {
-            // 로그인 상태: index.html 에 haruDataSaved 이벤트 전달 (Firebase에 자동 저장됨)
+            // FIX: 로그인 사용자 (Firestore 전용, haruDataSaved 이벤트 발생)
+            console.log("Firestore 저장 이벤트 발생", { detail: stateToSave });
             window.dispatchEvent(new CustomEvent('haruDataSaved', { detail: stateToSave }));
         } else {
-            // 게스트 상태: 일회성 sessionStorage 하나만 사용 (브라우저 종료 시 증발)
+            // FIX: 게스트 사용자 (sessionStorage에만 저장)
             try {
                 sessionStorage.setItem('guest_dayplan_session', JSON.stringify(stateToSave));
+                console.log("게스트 세션 저장");
             } catch (e) {
-                console.error('sessionStorage 저장 오류:', e);
+                console.error("sessionStorage 저장 오류 방어:", e);
             }
         }
     };
 
-    // ---------------------------------------------------------
-    // 로그인 / 게스트 전환 인터페이스 (index.html에서 onAuthStateChanged로 호출됨)
-    // ---------------------------------------------------------
+    // =========================================================
+    // 3. 로그인 ↔ 게스트 전환 (index.html에서 호출)
+    // =========================================================
 
-    // 게스트 모드 진입 시 (요구사항 4)
-    window.haruSetGuestMode = () => {
+    // FIX: window.haruSetGuestMode (로그아웃 플래그 추가 및 완전 초기화)
+    window.haruSetGuestMode = (isLogout = false) => {
+        // 로그아웃으로 인한 상태 전환이거나, 직전에 로그인 상태였던 경우 완전 리셋
+        if (isLogout || currentUid !== null) {
+            console.log("게스트 초기화");
+            currentUid = null;
+            applyAppData(null); // 완전 초기 상태 적용
+            try { sessionStorage.removeItem('guest_dayplan_session'); } catch(e){} // 게스트 기존 세션 삭제
+            reRenderViews();
+            return;
+        }
+
+        // 새로고침 등으로 연속된 게스트 상태 유지 시
         currentUid = null;
         let guestData = {};
-        
         try {
             const stored = sessionStorage.getItem('guest_dayplan_session');
             if (stored) guestData = JSON.parse(stored);
         } catch (e) {
             console.error('sessionStorage 파싱 실패 복구:', e);
-            guestData = {}; // 파싱 실패 시 빈 데이터로 복구
+            guestData = {}; 
         }
         
-        applyAppData(guestData); // 불러오기(없을 경우 빈 초기상태)
+        applyAppData(guestData);
         reRenderViews();
     };
 
-    // 로그인 유저 셋업 (요구사항 3)
+    // FIX: window.haruSetUser (병합 로직 제거 및 cloudData 우선 적용)
     window.haruSetUser = (uid, cloudData) => {
-        // 기존 게스트 데이터 존재 여부 판단
-        let hasGuestData = false;
-        try {
-            const stored = sessionStorage.getItem('guest_dayplan_session');
-            if (stored) {
-                const parsed = JSON.parse(stored);
-                const p = Object.keys(parsed.plans || {}).some(d => parsed.plans[d].length > 0);
-                const s = Object.keys(parsed.schedule || {}).some(d => Object.keys(parsed.schedule[d]).length > 0);
-                const m = Object.keys(parsed.memos || {}).length > 0;
-                const g = !!(parsed.goal);
-                hasGuestData = p || s || m || g;
-            }
-        } catch(e) {}
-
-        const useCloudOnly = () => {
-            currentUid = uid;
-            applyAppData(cloudData); // 우선 Firestore 데이터 적용
-            try { sessionStorage.removeItem('guest_dayplan_session'); } catch(e){}
-            reRenderViews();
-        };
-
-        if (hasGuestData) {
-            // 게스트 데이터가 남아있을 경우 confirm 으로 덮어쓰기 허가 받기
-            if (confirm('게스트에서 작성한 임시 데이터를 계정에 저장할까요?\n(확인 시 기존 데이터에 통합되어 저장됩니다)')) {
-                currentUid = uid;
-                // 클라우드 데이터를 바탕으로, 현재 앱(게스트) 데이터를 덮어씌움
-                const merged = cloudData ? { ...cloudData } : {};
-                merged.plans = { ...(merged.plans || {}), ...appData.plans };
-                merged.schedule = { ...(merged.schedule || {}), ...appData.schedule };
-                merged.memos = { ...(merged.memos || {}), ...appData.memos };
-                if (appData.goal) merged.goal = appData.goal;
-                
-                applyAppData(merged);
-                try { sessionStorage.removeItem('guest_dayplan_session'); } catch(e){}
-                saveCurrentState(); // 확인한 경우에만 덮어쓰기 후 저장 이벤트 발생!
-                reRenderViews();
-            } else {
-                useCloudOnly(); // 취소한 경우 게스트 데이터 완전 파기 후 클라우드 내용 복원
-            }
-        } else {
-            useCloudOnly(); // 남은 게스트 데이터가 없으면 클라우드 내용 즉시 복원
-        }
+        console.log("로그인 데이터 적용");
+        currentUid = uid;
+        
+        // 로그인 시 기존 게스트 세션 데이터 자동 삭제 (자동 병합 방지)
+        try { sessionStorage.removeItem('guest_dayplan_session'); } catch(e){}
+        
+        // 클라우드 데이터 적용 (없으면 빈 상태)
+        applyAppData(cloudData || null);
+        reRenderViews();
     };
 
+
     // =========================================================
-    // UI 업데이트 및 기능 동작 (기능 완료마다 saveCurrentState() 호출)
+    // 4. UI 렌더링 및 기능
     // =========================================================
 
     const reRenderViews = () => {
@@ -251,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         dailyMemo.value = appData.memos[currentActiveDate] || '';
     };
 
-    // --- 목표 메모 뷰 ---
+    // --- 목표 설정 뷰 ---
     const renderGoal = () => {
         if (appData.goal && appData.goal.trim()) {
             goalDisplay.textContent = appData.goal;
@@ -271,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     saveGoalBtn.addEventListener('click', () => {
         appData.goal = goalInput.value.trim();
-        saveCurrentState(); // 앱 데이터 변경됨 (요구사항 6)
+        saveCurrentState();
         renderGoal();
         
         goalDisplay.classList.remove('hidden');
@@ -284,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let memoTimeout;
     dailyMemo.addEventListener('input', (e) => {
         appData.memos[currentActiveDate] = e.target.value;
-        saveCurrentState(); // 앱 데이터 변경됨 (요구사항 6)
+        saveCurrentState();
         
         memoSavedIndicator.classList.remove('hidden');
         memoSavedIndicator.style.animation = 'none';
@@ -297,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     });
 
-    // --- 스케줄 뷰 ---
+    // --- 시간 단위 스케줄 뷰 ---
     const renderHourlySchedule = () => {
         setDashAndScheduleHeader();
         hourlyScheduleContainer.innerHTML = '';
@@ -325,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const input = slot.querySelector('.time-input');
             input.addEventListener('input', (e) => {
                 currentData[hourStr] = e.target.value;
-                saveCurrentState(); // 스케줄 변경 시 자동 저장 (요구사항 6)
+                saveCurrentState();
             });
             
             hourlyScheduleContainer.appendChild(slot);
@@ -364,7 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const toggleComplete = (e) => {
             if (e.target.closest('.task-item-actions') || e.target.tagName.toLowerCase() === 'input') return;
             appData.plans[dateKey][index].completed = !appData.plans[dateKey][index].completed;
-            saveCurrentState(); // 완료 상태 변경
+            saveCurrentState();
             if (!viewDaily.classList.contains('hidden')) renderDailyTasks();
         };
 
@@ -374,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
         li.querySelector('.star').addEventListener('click', (e) => {
             e.stopPropagation();
             appData.plans[dateKey][index].priority = appData.plans[dateKey][index].priority === 'high' ? 'normal' : 'high';
-            saveCurrentState(); // 중요도 변경
+            saveCurrentState();
             if (!viewDaily.classList.contains('hidden')) renderDailyTasks();
         });
 
@@ -392,11 +380,15 @@ document.addEventListener('DOMContentLoaded', () => {
             actionContainer.style.display = 'none';
             input.focus();
 
+            const val = input.value;
+            input.value = '';
+            input.value = val;
+
             const saveEdit = () => {
                 const newText = input.value.trim();
                 if (newText && newText !== currentText) {
                     appData.plans[dateKey][index].text = newText;
-                    saveCurrentState(); // 할 일 텍스트 수정 완료
+                    saveCurrentState();
                 }
                 renderDailyTasks();
             };
@@ -411,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             if (confirm('이 플랜을 삭제하시겠습니까?')) {
                 appData.plans[dateKey].splice(index, 1);
-                saveCurrentState(); // 할 일 삭제 시 자동 저장 (요구사항 6)
+                saveCurrentState();
                 renderDailyTasks();
             }
         });
@@ -452,7 +444,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // 추가 뷰
     priorityToggle.addEventListener('click', () => {
         isHighPriority = !isHighPriority;
         if(isHighPriority) {
@@ -477,7 +468,7 @@ document.addEventListener('DOMContentLoaded', () => {
             completed: false, 
             priority: isHighPriority ? 'high' : 'normal' 
         });
-        saveCurrentState(); // 새로운 할 일 추가 완료 (요구사항 6)
+        saveCurrentState();
         renderDailyTasks();
 
         taskInput.value = '';
@@ -494,12 +485,12 @@ document.addEventListener('DOMContentLoaded', () => {
             delete appData.plans[currentActiveDate];
             delete appData.schedule[currentActiveDate];
             delete appData.memos[currentActiveDate];
-            saveCurrentState(); // 일별 전체 삭제
+            saveCurrentState();
             switchView('history'); 
         }
     });
 
-    // --- 히스토리 통계 뷰 ---
+    // --- 히스토리 통계 시각화 뷰 ---
     const renderHistory = () => {
         historyContainer.innerHTML = '';
         
@@ -556,7 +547,7 @@ document.addEventListener('DOMContentLoaded', () => {
         historyContainer.appendChild(gridDiv);
     };
 
-    // --- 공용 뷰 전환기 ---
+    // --- 통합 네비게이션 제어 ---
     const switchView = (targetView) => {
         viewDashboard.classList.add('hidden');
         viewSchedule.classList.add('hidden');
@@ -592,6 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     navItems.forEach(item => { item.addEventListener('click', () => switchView(item.dataset.target)); });
+    widgetBtns.forEach(btn => { btn.addEventListener('click', () => switchView(btn.dataset.target)); });
 
     const handleDateChange = (e) => {
         if (e.target.value) {
@@ -606,11 +598,15 @@ document.addEventListener('DOMContentLoaded', () => {
     scheduleDatePicker.addEventListener('change', handleDateChange);
     dailyDatePicker.addEventListener('change', handleDateChange);
 
-    // ===================================
-    // 프로그램 시작 셋업
-    // ===================================
-    // 초기에는 무조건 빈 데이터 (또는 게스트세션)로 기초 렌더링 한 번 진행
-    window.haruSetGuestMode();
-    switchView('dashboard');
-    // 사용자는 곧바로 index.html Firebase 훅에서 haruSetGuestMode/haruSetUser() 로 넘어가며 로드됨
+    // =========================================================
+    // 5. 프로그램 최초 구동 시 초기화 분리 
+    // =========================================================
+    
+    // FIX: Firebase onAuthStateChanged 호출 전 비어있는 UI로 대기
+    const initAppRender = () => {
+        applyAppData(null);
+        switchView('dashboard');
+    }
+    
+    initAppRender();
 });

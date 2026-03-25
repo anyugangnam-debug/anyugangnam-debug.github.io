@@ -257,21 +257,26 @@
             });
         }
 
-        // 데이터 저장 이벤트 감지 (script.js에서 발생)
-        window.addEventListener('haruDataSaved', (e) => {
+        // FIX: 데이터 저장 이벤트 감지 (script.js에서 발생)
+        window.addEventListener('haruDataSaved', async (e) => {
             if (currentUser) {
                 const data = e.detail;
-                const docRef = doc(db, "users", currentUser.uid);
-                setDoc(docRef, data, { merge: true }).catch(err => console.error("데이터 저장 실패:", err));
+                const docRef = doc(db, "users", currentUser.uid); // FIX: 저장 경로 명확화
+                try {
+                    await setDoc(docRef, data, { merge: true }); // plans, schedule, memos, goal 전체 저장
+                    console.log("Firestore 저장 성공", data); // FIX: 성공 시 데이터 로깅 보장
+                } catch (err) {
+                    console.error("Firestore 저장 실패", err); // FIX: 실패 시 에러 로깅 보장
+                }
             }
         });
 
-        // 상태 감지
+        // FIX: 상태 감지
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
             if (userDisplay && loginBtn && logoutBtn) {
                 if (user) {
-                    // 요구사항 2 & 4: 로그인된 경우 사용자 uid 연동 및 상태 뱃지 표시
+                    // 로그인 사용자 화면 업데이트
                     if (authStatusBadge) {
                         authStatusBadge.innerText = "로그인 사용자";
                         authStatusBadge.style.background = "rgba(16, 185, 129, 0.15)";
@@ -285,15 +290,18 @@
                         const docRef = doc(db, "users", user.uid);
                         const docSnap = await getDoc(docRef);
                         if (window.haruSetUser) {
+                            // FIX: 데이터 로드 및 window.haruSetUser 호출 (없으면 null 전달하여 초기 빈 상태 적용)
                             window.haruSetUser(user.uid, docSnap.exists() ? docSnap.data() : null);
                         }
                     } catch (err) {
                         console.error("데이터 로드 에러:", err);
-                        // 권한 오류 등으로 통신 실패 시에도 로컬 캐시 연동
                         if (window.haruSetUser) window.haruSetUser(user.uid, null);
                     }
+                    
+                    loginBtn.innerHTML = '<i class="fab fa-google"></i> 로그인';
+                    loginBtn.disabled = false;
                 } else {
-                    // 요구사항 3 & 4: 로그인 안 된 경우 guest 상태로 처리 및 표시
+                    // 로그아웃 (게스트 진입)
                     if (authStatusBadge) {
                         authStatusBadge.innerText = "게스트 모드";
                         authStatusBadge.style.background = "var(--border-color)";
@@ -306,7 +314,8 @@
                     loginBtn.disabled = false;
                     
                     if (window.haruSetGuestMode) {
-                        window.haruSetGuestMode();
+                        // FIX: 로그아웃 및 비로그인 시 true 전달하여 남아있는 데이터 완전 초기화 보장
+                        window.haruSetGuestMode(true); 
                     }
                 }
             }
