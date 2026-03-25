@@ -36,7 +36,10 @@
             </header>
             <main class="dashboard-main">
                 <div class="greeting-message" style="display:flex; justify-content:space-between; align-items:center; text-align:left;">
-                    <div><span id="user-display" style="font-weight:700;">게스트</span>님,<br>오늘도 화이팅! 🌱</div>
+                    <div>
+                        <span id="auth-status-badge" style="display:inline-block; font-size: 0.75rem; padding: 2px 8px; border-radius: 12px; margin-bottom: 4px; background: var(--border-color); color: var(--text-muted);">게스트 모드</span><br>
+                        <span id="user-display" style="font-weight:700;">게스트</span>님,<br>오늘도 화이팅! 🌱
+                    </div>
                     <div style="flex-shrink:0;">
                         <button id="login-btn" class="action-btn-small" style="float:none; margin-left:8px;"><i class="fab fa-google"></i> 로그인</button>
                         <button id="logout-btn" class="action-btn-small" style="float:none; margin-left:8px; display:none; background-color:var(--text-muted);"><i class="fas fa-sign-out-alt"></i> 로그아웃</button>
@@ -224,7 +227,9 @@
         const loginBtn = document.getElementById('login-btn');
         const logoutBtn = document.getElementById('logout-btn');
         const userDisplay = document.getElementById('user-display');
+        const authStatusBadge = document.getElementById('auth-status-badge');
         
+        // 요구사항 1: Firebase 로그인 상태를 감지해서 currentUser 상태를 관리
         let currentUser = null;
 
         if (loginBtn && logoutBtn) {
@@ -266,6 +271,12 @@
             currentUser = user;
             if (userDisplay && loginBtn && logoutBtn) {
                 if (user) {
+                    // 요구사항 2 & 4: 로그인된 경우 사용자 uid 연동 및 상태 뱃지 표시
+                    if (authStatusBadge) {
+                        authStatusBadge.innerText = "로그인 사용자";
+                        authStatusBadge.style.background = "rgba(16, 185, 129, 0.15)";
+                        authStatusBadge.style.color = "var(--success-color)";
+                    }
                     userDisplay.innerText = user.displayName;
                     loginBtn.style.display = "none";
                     logoutBtn.style.display = "inline-block";
@@ -282,6 +293,12 @@
                         if (window.haruSetUser) window.haruSetUser(user.uid, null);
                     }
                 } else {
+                    // 요구사항 3 & 4: 로그인 안 된 경우 guest 상태로 처리 및 표시
+                    if (authStatusBadge) {
+                        authStatusBadge.innerText = "게스트 모드";
+                        authStatusBadge.style.background = "var(--border-color)";
+                        authStatusBadge.style.color = "var(--text-muted)";
+                    }
                     userDisplay.innerText = "게스트";
                     loginBtn.innerHTML = '<i class="fab fa-google"></i> 로그인';
                     loginBtn.style.display = "inline-block";
