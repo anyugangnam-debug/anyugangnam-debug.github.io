@@ -10,7 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google AdSense - 승인을 위해 꼭 필요한 스크립트. 나중에 승인 통과되면 본인의 데이터 클라이언트 ID로 수정해야 합니다. -->
+    <!-- FIX: 디버깅용 400 에러 방지를 위해 임시 주석 처리
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0000000000000000" crossorigin="anonymous"></script>
+    -->
 </head>
 
 <body>
@@ -257,17 +259,16 @@
             });
         }
 
-        // FIX: 데이터 저장 이벤트 감지 (script.js에서 발생)
+        // FIX: 데이터 저장 이벤트 감지 (Firestore 저장 성공 로그 추가)
         window.addEventListener('haruDataSaved', async (e) => {
-            if (currentUser) {
+            if (!currentUser) return; // FIX: currentUser 없으면 바로 리턴
+            try {
                 const data = e.detail;
-                const docRef = doc(db, "users", currentUser.uid); // FIX: 저장 경로 명확화
-                try {
-                    await setDoc(docRef, data, { merge: true }); // plans, schedule, memos, goal 전체 저장
-                    console.log("Firestore 저장 성공", data); // FIX: 성공 시 데이터 로깅 보장
-                } catch (err) {
-                    console.error("Firestore 저장 실패", err); // FIX: 실패 시 에러 로깅 보장
-                }
+                const docRef = doc(db, "users", currentUser.uid);
+                await setDoc(docRef, data, { merge: true });
+                console.log("Firestore 저장 성공", data); // FIX: 성공 로그
+            } catch (err) {
+                console.error("데이터 저장 실패:", err); // FIX: 에러 로그
             }
         });
 
@@ -340,6 +341,7 @@
         
         <!-- 배너/인피드 광고 삽입 위치 -->
         <div style="margin-top: 16px; border-radius: 12px; overflow: hidden; min-height: 90px; background: rgba(0,0,0,0.03);">
+            <!-- FIX: 디버깅용 400 에러 방지를 위해 임시 주석 처리
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-0000000000000000"
@@ -349,6 +351,7 @@
             <script>
                  (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
+            -->
         </div>
     </footer>
 </body>
