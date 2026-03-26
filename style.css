@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
 :root {
     --primary-color: #7DACE4; 
     --primary-hover: #5B92D3; 
@@ -927,3 +928,336 @@ body.desktop-layout .history-grid {
 }
 input:checked + .slider { background-color: var(--success-color); }
 input:checked + .slider:before { transform: translateX(22px); }
+
+/* ============================================
+   설정 탭 UI
+   ============================================ */
+.settings-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-color);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 20px;
+}
+.settings-tab {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+.settings-tab.active {
+    background: var(--card-bg);
+    color: var(--text-main);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.settings-tab:hover:not(.active) { color: var(--text-main); }
+.settings-tab-content { display: block; }
+.settings-tab-content.hidden { display: none; }
+
+/* 디자인 선택 UI */
+.design-tab-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    text-align: center;
+}
+.design-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.design-option {
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+.design-option:hover { border-color: var(--primary-color); }
+.design-option.active {
+    border-color: var(--primary-color);
+    background: rgba(125, 172, 228, 0.06);
+}
+[data-theme="dark"] .design-option.active { background: rgba(255, 179, 198, 0.08); }
+.design-option-name { font-size: 0.9rem; font-weight: 700; color: var(--text-main); }
+.design-option-desc { font-size: 0.75rem; color: var(--text-muted); }
+
+/* 미리보기 카드 */
+.design-preview-card {
+    width: 80px;
+    height: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+}
+.dp-header { height: 22px; flex-shrink: 0; }
+.dp-content { flex: 1; padding: 6px 5px; display: flex; flex-direction: column; gap: 5px; }
+.dp-bar { height: 7px; border-radius: 3px; }
+.dp-bar.short { width: 65%; }
+.dp-nav {
+    height: 18px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 6px;
+}
+.dp-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+/* 기본 테마 미리보기 */
+.default-card { background: #F4F7FB; }
+.default-card .dp-header { background: #FFFFFF; border-bottom: 1px solid #E2E8F0; }
+.default-card .dp-bar { background: #7DACE4; opacity: 0.6; }
+.default-card .dp-bar.short { background: #E2E8F0; opacity: 1; }
+.default-card .dp-nav { background: #FFFFFF; border-top: 1px solid #E2E8F0; }
+.default-card .dp-dot { background: #D1D9E0; }
+.default-card .dp-dot.active { background: #7DACE4; }
+
+/* 미니멀 테마 미리보기 */
+.minimal-card { background: #F5F5F5; }
+.minimal-card .dp-header { background: #FFFFFF; border-bottom: 1px solid #E8E8E8; }
+.minimal-card .dp-bar { background: #111111; opacity: 0.75; border-radius: 2px; }
+.minimal-card .dp-bar.short { background: #CCCCCC; opacity: 1; }
+.minimal-card .dp-nav { background: #111111; }
+.minimal-card .dp-dot { background: #555555; }
+.minimal-card .dp-dot.active { background: #FFFFFF; }
+
+/* ============================================
+   미니멀 디자인 테마 (노트 한 장 감성)
+   ============================================ */
+[data-design="minimal"] {
+    --primary-color: #111111;
+    --primary-hover: #333333;
+    --bg-color: #fcfaf8;
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --text-main: #111111;
+    --text-muted: #888888;
+    --border-color: #e2e2e2;
+    --success-color: #2D2D2D;
+    --priority-high: #111111;
+    --priority-bg: #F0F0F0;
+    --item-bg: rgba(255, 255, 255, 0.6);
+    --item-hover-bg: rgba(245, 245, 245, 0.8);
+    --input-bg: transparent;
+}
+[data-design="minimal"][data-theme="dark"] {
+    --primary-color: #DDDDDD;
+    --primary-hover: #BBBBBB;
+    --bg-color: #1e1d1b;
+    --card-bg: rgba(30, 30, 30, 0.7);
+    --text-main: #E0E0E0;
+    --text-muted: #777777;
+    --border-color: #333333;
+    --success-color: #DDDDDD;
+    --priority-high: #DDDDDD;
+    --priority-bg: #2A2A2A;
+    --item-bg: rgba(20, 20, 20, 0.6);
+    --item-hover-bg: rgba(35, 35, 35, 0.8);
+    --input-bg: transparent;
+}
+
+/* 노트 필기 느낌 폰트 적용 (아이콘 깨짐 방지를 위해 선택적 지정) */
+[data-design="minimal"] body, 
+[data-design="minimal"] input, 
+[data-design="minimal"] textarea, 
+[data-design="minimal"] button, 
+[data-design="minimal"] .task-content, 
+[data-design="minimal"] .widget-btn, 
+[data-design="minimal"] .goal-content,
+[data-design="minimal"] .empty-state,
+[data-design="minimal"] .time-label,
+[data-design="minimal"] h1, 
+[data-design="minimal"] h2, 
+[data-design="minimal"] h3,
+[data-design="minimal"] .header-actions button,
+[data-design="minimal"] .date-display {
+    font-family: 'Gowun Dodum', 'Pretendard', sans-serif;
+}
+
+[data-design="minimal"] .app-container {
+    background-color: var(--bg-color);
+    background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(0,0,0,0.06) 31px, rgba(0,0,0,0.06) 32px);
+    border-radius: 20px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+[data-design="minimal"][data-theme="dark"] .app-container {
+    background-image: repeating-linear-gradient(transparent, transparent 31px, rgba(255,255,255,0.05) 31px, rgba(255,255,255,0.05) 32px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+}
+
+[data-design="minimal"] .view {
+    background: transparent;
+}
+
+body[data-design="minimal"] {
+    background-image: none;
+}
+[data-design="minimal"] .header-title h1 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+[data-design="minimal"] .dashboard-card {
+    border-radius: 14px;
+    box-shadow: none;
+    border: 1.5px solid var(--border-color);
+}
+[data-design="minimal"] .dashboard-card:hover {
+    box-shadow: none;
+    border-color: #888888;
+}
+[data-design="minimal"][data-theme="dark"] .dashboard-card:hover { border-color: #444444; }
+[data-design="minimal"] .widget-btn {
+    border-radius: 14px;
+    box-shadow: none;
+    border: 1.5px solid var(--border-color);
+}
+[data-design="minimal"] .widget-btn:hover {
+    border-color: #111111;
+    box-shadow: none;
+    transform: translateY(-2px);
+}
+[data-design="minimal"][data-theme="dark"] .widget-btn:hover { border-color: #EEEEEE; }
+[data-design="minimal"] .widget-icon { background: var(--bg-color); }
+[data-design="minimal"][data-theme="dark"] .widget-icon { background: #1A1A1A; }
+[data-design="minimal"] .history-block {
+    border-radius: 14px;
+    box-shadow: none;
+    border: 1.5px solid var(--border-color);
+}
+[data-design="minimal"] .history-block:hover {
+    box-shadow: none;
+    border-color: #111111;
+    transform: translateY(-2px);
+}
+[data-design="minimal"][data-theme="dark"] .history-block:hover { border-color: #EEEEEE; }
+[data-design="minimal"] .task-item {
+    border-radius: 10px;
+    border: 1.5px solid var(--border-color);
+}
+[data-design="minimal"] .task-item:hover {
+    border-color: #111111;
+    background-color: var(--item-hover-bg);
+}
+[data-design="minimal"][data-theme="dark"] .task-item:hover { border-color: #EEEEEE; }
+[data-design="minimal"] .greeting-message {
+    background: var(--item-hover-bg);
+    box-shadow: none;
+    border-radius: 14px;
+    border: 1.5px solid var(--border-color);
+}
+
+/* 미니멀 하단 네비게이션 - 검정 바 (wallet 앱 스타일) */
+[data-design="minimal"] .bottom-nav {
+    background: #111111;
+    border-top: none;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    height: 68px;
+}
+[data-design="minimal"] .view {
+    height: calc(100% - 68px);
+}
+[data-design="minimal"] .nav-item { color: #555555; }
+[data-design="minimal"] .nav-item.active { color: #FFFFFF; }
+[data-design="minimal"] .nav-item:hover { color: #BBBBBB; }
+[data-design="minimal"] .nav-item:hover i { transform: translateY(-2px); }
+[data-design="minimal"] .nav-item.active i { transform: translateY(-2px); }
+[data-design="minimal"][data-theme="dark"] .bottom-nav {
+    background: #000000;
+    border-top: 1px solid #1A1A1A;
+}
+
+/* 미니멀 버튼 */
+[data-design="minimal"] #add-btn,
+[data-design="minimal"] .action-btn,
+[data-design="minimal"] .action-btn-small {
+    background-color: #111111;
+    border-radius: 10px;
+}
+[data-design="minimal"] #add-btn:hover,
+[data-design="minimal"] .action-btn:hover,
+[data-design="minimal"] .action-btn-small:hover {
+    background-color: #333333;
+}
+[data-design="minimal"][data-theme="dark"] #add-btn,
+[data-design="minimal"][data-theme="dark"] .action-btn,
+[data-design="minimal"][data-theme="dark"] .action-btn-small {
+    background-color: #EEEEEE;
+    color: #111111;
+}
+[data-design="minimal"][data-theme="dark"] #add-btn:hover,
+[data-design="minimal"][data-theme="dark"] .action-btn:hover,
+[data-design="minimal"][data-theme="dark"] .action-btn-small:hover {
+    background-color: #CCCCCC;
+}
+
+/* 미니멀 체크 아이콘 */
+[data-design="minimal"] .task-item.completed .check-icon {
+    background-color: #111111;
+    border-color: #111111;
+}
+[data-design="minimal"][data-theme="dark"] .task-item.completed .check-icon {
+    background-color: #EEEEEE;
+    border-color: #EEEEEE;
+    color: #111111;
+}
+
+/* 미니멀 우선순위 */
+[data-design="minimal"] .task-item.high-priority { border-left: 4px solid #111111; }
+[data-design="minimal"][data-theme="dark"] .task-item.high-priority { border-left: 4px solid #EEEEEE; }
+
+/* 미니멀 토글 */
+[data-design="minimal"] input:checked + .slider { background-color: #111111; }
+[data-design="minimal"][data-theme="dark"] input:checked + .slider { background-color: #EEEEEE; }
+
+/* 미니멀 인풋 포커스 */
+[data-design="minimal"] #task-input:focus {
+    border-color: #111111;
+    box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+}
+[data-design="minimal"][data-theme="dark"] #task-input:focus {
+    border-color: #EEEEEE;
+    box-shadow: 0 0 0 3px rgba(238, 238, 238, 0.08);
+}
+
+/* 미니멀 모달 */
+[data-design="minimal"] .modal-content { border-radius: 16px; }
+[data-design="minimal"] .modal-overlay { border-radius: 20px; }
+
+/* 미니멀 히스토리 완료율 뱃지 */
+[data-design="minimal"] .block-stats .completion-rate {
+    background: #F0F0F0;
+    color: #111111;
+}
+[data-design="minimal"][data-theme="dark"] .block-stats .completion-rate {
+    background: #2A2A2A;
+    color: #EEEEEE;
+}
+
+/* 미니멀 디자인 옵션 선택 표시 */
+[data-design="minimal"] .design-option.active {
+    border-color: #111111;
+    background: rgba(17, 17, 17, 0.04);
+}
+[data-design="minimal"][data-theme="dark"] .design-option.active {
+    border-color: #EEEEEE;
+    background: rgba(238, 238, 238, 0.06);
+}
+[data-design="minimal"] .design-option:hover { border-color: #111111; }
+[data-design="minimal"][data-theme="dark"] .design-option:hover { border-color: #EEEEEE; }

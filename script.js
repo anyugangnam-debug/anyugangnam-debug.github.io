@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let soundVolume = parseFloat(localStorage.getItem('haruSoundVolume'));
     if (isNaN(soundVolume)) soundVolume = 0.5; // 기본 볼륨 50%
     let isDesktopMode = localStorage.getItem('haruLayout') === 'desktop'; // 기본값 모바일
+    let currentDesign = localStorage.getItem('haruDesign') || 'default';
 
     // 모달 토글
     settingsToggles.forEach(btn => btn.addEventListener('click', () => {
@@ -133,6 +134,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     applyLayout();
 
+    // 디자인 테마 적용
+    const applyDesign = () => {
+        document.body.setAttribute('data-design', currentDesign);
+        document.querySelectorAll('.design-option').forEach(opt => {
+            opt.classList.toggle('active', opt.dataset.design === currentDesign);
+        });
+    };
+    document.querySelectorAll('.design-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+            currentDesign = opt.dataset.design;
+            localStorage.setItem('haruDesign', currentDesign);
+            applyDesign();
+        });
+    });
+    applyDesign();
+
+    // 설정 탭 전환
+    document.querySelectorAll('.settings-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.settings-tab-content').forEach(c => c.classList.add('hidden'));
+            tab.classList.add('active');
+            document.getElementById('tab-' + tab.dataset.tab).classList.remove('hidden');
+        });
+    });
+
     // 글로벌 효과음 (Web Audio API) 로직 - 음정(음색) 없는 순수 마우스 클릭 소리
     function playClickSound() {
         if (!isSoundOn || soundVolume <= 0) return;
@@ -175,10 +202,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('click', (e) => {
         // 인터랙션 요소 클릭 시 효과음 재생
-        if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.widget-btn') || e.target.closest('.history-block') || e.target.matches('input[type="checkbox"]')) {
+        if (e.target.closest('button') || e.target.closest('a') || e.target.closest('.widget-btn') || e.target.closest('.history-block') || e.target.matches('input[type="checkbox"]') || e.target.closest('.design-option')) {
             playClickSound();
         }
     });
+
+    // To do list 체크 시 가볍게 스윽 긋는 소리 (미니멀 디자인 전용)
+    function playSwishSound() {
+        if (!isSoundOn || soundVolume <= 0) return;
+        // 사용자 요청에 따라 미니멀 디자인에서만 동작하게 제한 (필요시 제거 가능)
+        const isMinimal = document.body.getAttribute('data-design') === 'minimal';
+        if (!isMinimal) return;
+
+        if (!window.audioCtx) window.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (window.audioCtx.state === 'suspended') window.audioCtx.resume();
+        try {
+            // 사각거리는 질감을 없애고 아주 짧고 간결한 '스윽' 소리만 남깁니다.
+            const bufferSize = window.audioCtx.sampleRate * 0.08; // 80ms로 단축
+            const buffer = window.audioCtx.createBuffer(1, bufferSize, window.audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1) * 0.5; // 원래보다 부드러운 노이즈
+            }
+            
+            const noiseSrc = window.audioCtx.createBufferSource();
+            noiseSrc.buffer = buffer;
+            
+            // Lowpass 필터를 사용해 거친 고역대를 깎아내고 간결한 스윽 소리만 연출
+            const filter = window.audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(2500, window.audioCtx.currentTime);
+            filter.frequency.exponentialRampToValueAtTime(300, window.audioCtx.currentTime + 0.08); 
+            
+            const gainNode = window.audioCtx.createGain();
+            
+            // 어택을 아주 짧게 하고 빠르게 사라지도록 설정
+            gainNode.gain.setValueAtTime(0, window.audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(soundVolume * 1.5, window.audioCtx.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, window.audioCtx.currentTime + 0.08);
+            
+            noiseSrc.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(window.audioCtx.destination);
+            
+            noiseSrc.start(window.audioCtx.currentTime);
+            noiseSrc.stop(window.audioCtx.currentTime + 0.08);
+        } catch (e) {
+            console.error('Swish sound error:', e);
+        }
+    }
 
     const getTodayString = () => {
         const today = new Date();
@@ -501,6 +574,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const toggleComplete = (e) => {
             if (e.target.closest('.task-item-actions') || e.target.tagName.toLowerCase() === 'input') return;
             appData.plans[dateKey][index].completed = !appData.plans[dateKey][index].completed;
+            
+            // 체크 시 스윽 긋는 소리 재생
+            if (appData.plans[dateKey][index].completed && typeof playSwishSound === 'function') {
+                playSwishSound();
+            }
+            
             saveCurrentState();
             if (!viewDaily.classList.contains('hidden')) renderDailyTasks();
         };

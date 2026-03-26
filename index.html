@@ -221,45 +221,97 @@
                     <h2>설정 <i class="fas fa-cog" style="color:var(--primary-color);"></i></h2>
                     <button class="icon-btn close-settings-btn"><i class="fas fa-times"></i></button>
                 </div>
-                <div class="settings-row">
-                    <div class="settings-info">
-                        <strong>다크 모드</strong>
-                        <span>어두운 화면으로 눈을 편안하게</span>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="setting-dark-mode">
-                        <span class="slider round"></span>
-                    </label>
+                <!-- 설정 탭 -->
+                <div class="settings-tabs">
+                    <button class="settings-tab active" data-tab="general">일반</button>
+                    <button class="settings-tab" data-tab="design">디자인</button>
                 </div>
-                <div class="settings-row">
-                    <div class="settings-info">
-                        <strong>효과음</strong>
-                        <span>버튼 클릭 시 소리 켜기/끄기</span>
+                <!-- 일반 탭 -->
+                <div class="settings-tab-content" id="tab-general">
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>다크 모드</strong>
+                            <span>어두운 화면으로 눈을 편안하게</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="setting-dark-mode">
+                            <span class="slider round"></span>
+                        </label>
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="setting-sound" checked>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div class="settings-row" id="volume-control-row">
-                    <div class="settings-info" style="width: 100%;">
-                        <strong>효과음 크기</strong>
-                        <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
-                            <i class="fas fa-volume-down" style="color: var(--text-muted);"></i>
-                            <input type="range" id="setting-volume" min="0" max="1" step="0.1" value="0.5" style="flex: 1; accent-color: var(--primary-color); height: 6px; cursor: pointer;">
-                            <i class="fas fa-volume-up" style="color: var(--text-muted);"></i>
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>효과음</strong>
+                            <span>버튼 클릭 시 소리 켜기/끄기</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="setting-sound" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="settings-row" id="volume-control-row">
+                        <div class="settings-info" style="width: 100%;">
+                            <strong>효과음 크기</strong>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                                <i class="fas fa-volume-down" style="color: var(--text-muted);"></i>
+                                <input type="range" id="setting-volume" min="0" max="1" step="0.1" value="0.5" style="flex: 1; accent-color: var(--primary-color); height: 6px; cursor: pointer;">
+                                <i class="fas fa-volume-up" style="color: var(--text-muted);"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="settings-row">
-                    <div class="settings-info">
-                        <strong>데스크탑(PC) 화면 모드</strong>
-                        <span>컴퓨터 모니터에 맞게 화면을 넓고 편안하게</span>
+                    <div class="settings-row">
+                        <div class="settings-info">
+                            <strong>데스크탑(PC) 화면 모드</strong>
+                            <span>컴퓨터 모니터에 맞게 화면을 넓고 편안하게</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="setting-desktop-mode">
+                            <span class="slider round"></span>
+                        </label>
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" id="setting-desktop-mode">
-                        <span class="slider round"></span>
-                    </label>
+                </div>
+                <!-- 디자인 탭 -->
+                <div class="settings-tab-content hidden" id="tab-design">
+                    <p class="design-tab-desc">앱의 디자인 테마를 선택하세요</p>
+                    <div class="design-options">
+                        <div class="design-option active" data-design="default">
+                            <div class="design-preview-card default-card">
+                                <div class="dp-header"></div>
+                                <div class="dp-content">
+                                    <div class="dp-bar"></div>
+                                    <div class="dp-bar short"></div>
+                                    <div class="dp-bar short" style="width:40%;"></div>
+                                </div>
+                                <div class="dp-nav">
+                                    <div class="dp-dot active"></div>
+                                    <div class="dp-dot"></div>
+                                    <div class="dp-dot"></div>
+                                    <div class="dp-dot"></div>
+                                    <div class="dp-dot"></div>
+                                </div>
+                            </div>
+                            <span class="design-option-name">기본</span>
+                            <span class="design-option-desc">컬러풀한 기본 테마</span>
+                        </div>
+                        <div class="design-option" data-design="minimal">
+                            <div class="design-preview-card minimal-card">
+                                <div class="dp-header"></div>
+                                <div class="dp-content">
+                                    <div class="dp-bar"></div>
+                                    <div class="dp-bar short"></div>
+                                    <div class="dp-bar short" style="width:40%;"></div>
+                                </div>
+                                <div class="dp-nav">
+                                    <div class="dp-dot active"></div>
+                                    <div class="dp-dot"></div>
+                                    <div class="dp-dot"></div>
+                                    <div class="dp-dot"></div>
+                                    <div class="dp-dot"></div>
+                                </div>
+                            </div>
+                            <span class="design-option-name">미니멀</span>
+                            <span class="design-option-desc">심플한 흑백 테마</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
