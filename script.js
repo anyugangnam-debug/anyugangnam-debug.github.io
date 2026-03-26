@@ -419,17 +419,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let memoTimeout;
     dailyMemo.addEventListener('input', (e) => {
         appData.memos[currentActiveDate] = e.target.value;
-        saveCurrentState();
-        
-        memoSavedIndicator.classList.remove('hidden');
-        memoSavedIndicator.style.animation = 'none';
-        void memoSavedIndicator.offsetWidth; 
-        memoSavedIndicator.style.animation = 'fadeInOut 2s ease forwards';
         
         clearTimeout(memoTimeout);
         memoTimeout = setTimeout(() => {
-            memoSavedIndicator.classList.add('hidden');
-        }, 2000);
+            saveCurrentState();
+            memoSavedIndicator.classList.remove('hidden');
+            memoSavedIndicator.style.animation = 'none';
+            void memoSavedIndicator.offsetWidth; 
+            memoSavedIndicator.style.animation = 'fadeInOut 2s ease forwards';
+            
+            setTimeout(() => {
+                memoSavedIndicator.classList.add('hidden');
+            }, 2000);
+        }, 800);
     });
 
     // --- 시간 단위 스케줄 뷰 ---
