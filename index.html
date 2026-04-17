@@ -60,7 +60,7 @@
                 <div class="dashboard-grid">
                     <button class="widget-btn" data-target="schedule">
                         <div class="widget-icon">⏰</div>
-                        <div class="widget-title">스케줄</div>
+                        <div class="widget-title">루틴</div>
                         <div class="widget-desc">시간대별로 차곡차곡</div>
                     </button>
                     <button class="widget-btn" data-target="daily">
@@ -92,21 +92,36 @@
             </main>
         </div>
 
-        <!-- 스케줄 뷰: 시간대별 일정 -->
+        <!-- 루틴 뷰: 시간대별 일정 -->
         <div id="view-schedule" class="view hidden">
             <header>
                 <div class="header-title">
-                    <h1>스케줄 ⏰</h1>
+                    <h1>루틴 ⏰</h1>
                     <div class="header-actions">
                         <button class="icon-btn settings-toggle" title="설정"><i class="fas fa-cog"></i></button>
                     </div>
                 </div>
-                <div class="date-display-container">
-                    <span id="schedule-date" class="date-display"></span>
-                    <label class="date-picker-label" title="날짜 변경">
-                        <i class="fas fa-calendar-day"></i>
-                        <input type="date" id="schedule-date-picker" class="hidden-date-picker">
-                    </label>
+                <div class="date-display-container" id="routine-date-container" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border-color); margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center;">
+                        <span id="schedule-date" class="date-display" style="font-size: 1.05rem; margin-right: 8px;"></span>
+                        <label class="date-picker-label" title="날짜 변경">
+                            <i class="fas fa-calendar-day"></i>
+                            <input type="date" id="schedule-date-picker" class="hidden-date-picker">
+                        </label>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);" id="override-switch-label">예외 날짜 편집</span>
+                        <label class="toggle-switch" style="transform: scale(0.85); margin: 0;">
+                            <input type="checkbox" id="routine-override-switch">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div id="routine-base-desc" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-bottom: 5px;">
+                    <i class="fas fa-info-circle"></i> 현재 모든 날짜에 적용될 <strong style="color: var(--primary-color);">매일 기본 루틴</strong>을 편집 중입니다.
+                </div>
+                <div id="routine-daily-desc" class="hidden" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-bottom: 5px;">
+                    <i class="fas fa-exclamation-circle" style="color: var(--warning-color);"></i> 이 날짜에만 적용될 <strong style="color: var(--warning-color);">특별 일정</strong>을 편집 중입니다.
                 </div>
             </header>
             <main>
@@ -324,7 +339,7 @@
             </button>
             <button class="nav-item" data-target="schedule">
                 <i class="fas fa-clock"></i>
-                <span>스케줄</span>
+                <span>루틴</span>
             </button>
             <button class="nav-item" data-target="daily">
                 <i class="fas fa-check-square"></i>

@@ -259,12 +259,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const todayStr = getTodayString();
     let currentActiveDate = todayStr;
     let isHighPriority = false;
+    let routineMode = 'base'; // 'base' 또는 'daily'
 
     // =========================================================
     // 1. 앱 전체 데이터 단일 상태 관리 객체
     // =========================================================
     let currentUid = null;
     let appData = {
+        routine: {},
         plans: {},
         schedule: {},
         memos: {},
@@ -283,6 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const getCurrentAppData = () => {
         return {
+            routine: appData.routine || {},
             plans: appData.plans || {},
             schedule: appData.schedule || {},
             memos: appData.memos || {},
@@ -295,6 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const applyAppData = (data) => {
         // 새 데이터 적용 전에 이전 appData 흔적이 남지 않도록 완전 초기화
         appData = {
+            routine: {},
             plans: {},
             schedule: {},
             memos: {},
@@ -303,6 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (data && typeof data === 'object') {
+            appData.routine = typeof data.routine === 'object' && data.routine !== null ? data.routine : {};
             appData.plans = typeof data.plans === 'object' && data.plans !== null ? data.plans : {};
             appData.schedule = typeof data.schedule === 'object' && data.schedule !== null ? data.schedule : {};
             appData.memos = typeof data.memos === 'object' && data.memos !== null ? data.memos : {};
@@ -508,11 +513,39 @@ document.addEventListener('DOMContentLoaded', () => {
         setDashAndScheduleHeader();
         hourlyScheduleContainer.innerHTML = '';
         
-        if (!appData.schedule[currentActiveDate]) {
-            appData.schedule[currentActiveDate] = {};
+        const overrideSwitch = document.getElementById('routine-override-switch');
+        const overrideSwitchLabel = document.getElementById('override-switch-label');
+        const routineBaseDesc = document.getElementById('routine-base-desc');
+        const routineDailyDesc = document.getElementById('routine-daily-desc');
+        
+        // 현재 선택된 날짜에 예외 루틴 데이터가 있는지 확인하여 모드 동기화
+        if (appData.schedule && appData.schedule[currentActiveDate]) {
+            routineMode = 'daily';
+            if (overrideSwitch) overrideSwitch.checked = true;
+        } else {
+            routineMode = 'base';
+            if (overrideSwitch) overrideSwitch.checked = false;
+        }
+
+        // UI 텍스트 및 효과 동기화
+        if (routineMode === 'base') {
+            if (routineBaseDesc) routineBaseDesc.classList.remove('hidden');
+            if (routineDailyDesc) routineDailyDesc.classList.add('hidden');
+            if (overrideSwitchLabel) overrideSwitchLabel.style.color = 'var(--text-muted)';
+        } else {
+            if (routineBaseDesc) routineBaseDesc.classList.add('hidden');
+            if (routineDailyDesc) routineDailyDesc.classList.remove('hidden');
+            if (overrideSwitchLabel) overrideSwitchLabel.style.color = 'var(--warning-color)';
         }
         
-        const currentData = appData.schedule[currentActiveDate];
+        let currentData = {};
+        if (routineMode === 'base') {
+            if (!appData.routine) appData.routine = {};
+            currentData = appData.routine;
+        } else {
+            currentData = appData.schedule[currentActiveDate] || {};
+        }
+        
         const currentHour = new Date().getHours();
         
         for (let i = 0; i < 24; i++) {
@@ -530,7 +563,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const input = slot.querySelector('.time-input');
             input.addEventListener('input', (e) => {
-                currentData[hourStr] = e.target.value;
+                if (routineMode === 'base') {
+                    if (!appData.routine) appData.routine = {};
+                    appData.routine[hourStr] = e.target.value;
+                } else {
+                    if (!appData.schedule[currentActiveDate]) {
+                        appData.schedule[currentActiveDate] = {};
+                    }
+                    appData.schedule[currentActiveDate][hourStr] = e.target.value;
+                }
                 saveCurrentState();
             });
             
@@ -546,6 +587,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 100);
         }
     };
+
+    // 예외 지정 스위치 토글 리스너
+    const routineOverrideSwitch = document.getElementById('routine-override-switch');
+    if (routineOverrideSwitch) {
+        routineOverrideSwitch.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                // 스위치 ON: 매일 루틴 값을 복사해서 현재 날짜 예외 루틴으로 분리시킴
+                if (!appData.schedule[currentActiveDate]) {
+                    appData.schedule[currentActiveDate] = JSON.parse(JSON.stringify(appData.routine || {}));
+                    
+                    // 만약 복사해온 것이 완전히 텅 빈 객체라면(아무것도 없는 경우) 빈 스트링이라도 넣어줘서 오브젝트가 존재함을 보장
+                    if (Object.keys(appData.schedule[currentActiveDate]).length === 0) {
+                        appData.schedule[currentActiveDate]["00:00"] = ""; 
+                    }
+                    saveCurrentState();
+                }
+                renderHourlySchedule();
+            } else {
+                // 스위치 OFF: 현재 날짜의 예외 루틴을 삭제하고 다시 매일 루틴으로 돌아감
+                if (confirm('스위치를 끄면 이 날짜에 수정한 예외 일정들이 지워집니다. 매일 기본 루틴으로 정말 되돌리시겠습니까?')) {
+                    delete appData.schedule[currentActiveDate];
+                    saveCurrentState();
+                    renderHourlySchedule();
+                } else {
+                    e.target.checked = true; // 취소시 스위치 원상복구
+                }
+            }
+        });
+    }
 
     // --- To Do List 뷰 ---
     const createTaskElement = (task, index, dateKey) => {
