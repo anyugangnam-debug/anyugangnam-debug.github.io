@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>하루플랜 | 하루를 효율적으로 관리하는 웹 앱</title>
-    <meta name="description" content="하루플랜은 일정, To do, 기록을 통해 생산성을 높이는 웹 앱입니다.">
+    <title>개인정보처리방침 | 하루플랜</title>
+    <meta name="description" content="하루플랜의 개인정보처리방침입니다. Google 로그인, Firebase 데이터 저장, Google AdSense 광고 및 쿠키 사용에 관한 안내를 확인하세요.">
     <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://haruplan.github.io/privacy.html">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8338690631070562" crossorigin="anonymous"></script>
 </head>
 <body data-theme="light">
     <script>
@@ -16,34 +18,105 @@
             document.body.setAttribute('data-theme', 'dark');
         }
     </script>
-    <div class="app-container" style="overflow-y: auto; display: block; padding: 20px;">
+    <div class="app-container" style="overflow-y: auto; display: block; padding: 20px; height: auto; max-height: none; border-radius: 24px;">
         <header style="margin-bottom: 20px; text-align: left;">
             <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
                 <i class="fas fa-arrow-left"></i> 돌아가기
             </a>
             <h1 style="margin-top: 20px; font-size: 1.5rem;">개인정보처리방침 🔒</h1>
+            <p style="margin-top: 6px; font-size: 0.82rem; color: var(--text-muted);">최종 수정일: 2025년 4월 29일</p>
         </header>
-        
-        <main class="dashboard-card" style="line-height: 1.6;">
-            <p>'하루플랜'은 사용자의 개인정보와 프라이버시를 가장 중요하게 생각합니다. 본 서비스의 데이터 처리 관련 방침을 안내드립니다.</p>
-            
-            <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">1. 로그인 및 데이터 동기화</h2>
-            <p>본 서비스는 사용자의 편리하고 안전한 계정 관리를 위해 <strong>Google 로그인(Firebase Authentication)</strong> 기능을 사용합니다. 사용자의 모든 로그인 데이터와 플랜 기록은 구글이 제공하는 <strong>Firebase Firestore</strong>라는 클라우드 데이터베이스에 엄격하게 분리되어 안전하게 저장됩니다.</p>
-            
-            <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">2. 게스트 모드 및 데이터 소멸</h2>
-            <p>비로그인 사용자는 '게스트 모드'를 통해 임시로 서비스를 체험할 수 있습니다. <strong>게스트 데이터는 오직 브라우저 세션(Session Storage)에만 기록되며, 브라우저 세션이 종료(탭 혹은 창 닫기)되면 흔적 없이 완벽히 삭제됩니다.</strong> 시스템 로그아웃 시에도 모든 캐시가 초기화됩니다.</p>
 
-            <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">3. 데이터 보호 원칙</h2>
-            <p><strong>당사는 어떠한 경우에도 기록된 일정을 몰래 열람하거나 분석하지 않으며, 제3의 영리 단체에 사용자의 개인정보를 판매하지 않습니다.</strong> 시스템은 오로지 사용자의 편의를 위한 동기화 목적으로만 데이터를 취급합니다.</p>
-            
-            <h2 style="margin-top: 25px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">4. 광고(Google AdSense) 및 쿠키 정책</h2>
-            <p>현재 본 웹사이트는 광고가 노출되지 않으나, <strong>향후 Google AdSense 등 광고 플랫폼의 심사 승인 후 광고가 표시될 예정입니다.</strong></p>
-            <p>광고 게재가 시작되면 사용자의 관심사에 맞춘 타겟팅 광고 제공 등을 위해 <strong>구글 및 타사 벤더가 쿠키(Cookie)를 사용할 수 있습니다.</strong> 사용자는 언제든지 브라우저 설정을 통해 쿠키를 차단하거나 제한할 수 있는 권리를 가집니다.</p>
+        <main class="dashboard-card" style="line-height: 1.75; font-size: 0.93rem;">
+
+            <p>'하루플랜'(이하 '서비스')은 사용자의 개인정보와 프라이버시를 최우선으로 생각합니다. 본 개인정보처리방침은 서비스가 수집하는 정보의 종류, 사용 방법, 보호 방법 및 사용자의 권리에 대해 투명하게 안내하기 위해 작성되었습니다.</p>
+
+            <!-- 1 -->
+            <h2 style="margin-top: 28px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">제1조 (수집하는 개인정보 항목 및 수집 방법)</h2>
+            <p>서비스는 Google 로그인(Firebase Authentication)을 통해 선택적으로 다음 정보를 수집합니다.</p>
+            <ul style="margin: 10px 0 0 18px; display: flex; flex-direction: column; gap: 4px;">
+                <li>Google 계정 이메일 주소</li>
+                <li>Google 계정 표시 이름 (Display Name)</li>
+                <li>Google 계정 고유 식별자 (UID)</li>
+            </ul>
+            <p style="margin-top: 10px;">로그인하지 않은 게스트 사용자의 경우, 서비스는 어떠한 개인정보도 수집하지 않습니다. 게스트 데이터는 브라우저 세션 스토리지(Session Storage)에만 임시 저장되며, 브라우저 탭을 닫으면 즉시 삭제됩니다.</p>
+
+            <!-- 2 -->
+            <h2 style="margin-top: 28px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">제2조 (개인정보의 수집 및 이용 목적)</h2>
+            <p>수집된 개인정보는 다음 목적으로만 사용됩니다.</p>
+            <ul style="margin: 10px 0 0 18px; display: flex; flex-direction: column; gap: 4px;">
+                <li>로그인 사용자 식별 및 인증</li>
+                <li>사용자별 할 일 목록, 스케줄, 메모, 목표 데이터의 클라우드 동기화 및 저장</li>
+                <li>여러 기기에서 동일한 데이터에 접근할 수 있도록 하는 계정 연동</li>
+            </ul>
+            <p style="margin-top: 10px;">서비스는 수집된 개인정보를 마케팅, 광고 타겟팅, 제3자 판매 등 본래 목적 이외의 용도로 사용하지 않습니다.</p>
+
+            <!-- 3 -->
+            <h2 style="margin-top: 28px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">제3조 (개인정보의 보유 및 이용 기간)</h2>
+            <p>사용자의 개인정보는 회원 탈퇴 또는 서비스 이용 목적 달성 시까지 보유합니다. 다만, 관련 법령에 따라 일정 기간 보관이 필요한 경우는 예외로 합니다. 사용자는 언제든지 서비스 이용을 중단하고 데이터 삭제를 요청할 수 있습니다.</p>
+
+            <!-- 4 -->
+            <h2 style="margin-top: 28px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">제4조 (개인정보의 제3자 제공)</h2>
+            <p>서비스는 원칙적으로 사용자의 개인정보를 외부에 제공하지 않습니다. 단, 다음의 경우는 예외로 합니다.</p>
+            <ul style="margin: 10px 0 0 18px; display: flex; flex-direction: column; gap: 4px;">
+                <li>사용자가 사전에 동의한 경우</li>
+                <li>법령의 규정에 따르거나 수사기관의 적법한 요청이 있는 경우</li>
+            </ul>
+
+            <!-- 5 -->
+            <h2 style="margin-top: 28px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">제5조 (개인정보의 안전성 확보 조치)</h2>
+            <p>서비스는 사용자의 개인정보를 안전하게 보호하기 위해 Google의 Firebase Firestore를 사용합니다. Firebase는 업계 표준의 암호화(HTTPS/TLS) 및 접근 제어 규칙(Security Rules)을 통해 인가된 사용자만 자신의 데이터에 접근할 수 있도록 보호합니다. 어떠한 관리자도 다른 사용자의 일정 데이터를 열람하거나 수정할 수 없습니다.</p>
+
+            <!-- 6: AdSense 핵심 섹션 -->
+            <h2 style="margin-top: 28px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">제6조 (광고 서비스 및 쿠키(Cookie) 정책)</h2>
+
+            <p><strong>6-1. Google AdSense 광고 게재</strong></p>
+            <p style="margin-top: 8px;">본 웹사이트는 Google LLC가 제공하는 <strong>Google AdSense</strong> 광고 서비스를 이용하거나, 향후 이용할 수 있습니다. Google AdSense는 사용자에게 관련성 높은 광고를 표시하기 위해 쿠키(Cookie) 및 유사한 추적 기술을 사용합니다.</p>
+
+            <p style="margin-top: 12px;"><strong>6-2. 쿠키(Cookie)란 무엇인가요?</strong></p>
+            <p style="margin-top: 8px;">쿠키는 웹사이트가 사용자의 브라우저에 저장하는 작은 텍스트 파일입니다. 광고 서비스에서 쿠키는 사용자의 웹 브라우징 활동(방문한 웹사이트, 클릭한 광고 등)을 기반으로 관심사에 맞는 맞춤형 광고를 제공하는 데 활용될 수 있습니다.</p>
+
+            <p style="margin-top: 12px;"><strong>6-3. Google의 광고 쿠키 사용</strong></p>
+            <p style="margin-top: 8px;">Google은 본 사이트에 광고를 게재할 때 <strong>DoubleClick 쿠키</strong>를 포함한 다양한 쿠키를 사용할 수 있습니다. 이를 통해 Google과 Google의 파트너사는 본 사이트 및 인터넷상의 다른 사이트에서 사용자의 방문 기록을 바탕으로 맞춤형 광고를 제공할 수 있습니다.</p>
+            <ul style="margin: 10px 0 0 18px; display: flex; flex-direction: column; gap: 4px;">
+                <li>Google의 광고 데이터 사용 방식 안내: <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener" style="color: var(--primary-color);">policies.google.com/technologies/ads</a></li>
+                <li>Google 개인정보처리방침: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color: var(--primary-color);">policies.google.com/privacy</a></li>
+            </ul>
+
+            <p style="margin-top: 12px;"><strong>6-4. 맞춤형 광고 거부 방법</strong></p>
+            <p style="margin-top: 8px;">사용자는 언제든지 Google의 광고 설정 페이지에서 맞춤형 광고를 거부할 수 있습니다. 또한 브라우저 설정에서 쿠키를 차단하거나 이미 저장된 쿠키를 삭제할 수 있습니다. 단, 쿠키를 차단하면 일부 서비스 기능이 제대로 작동하지 않을 수 있습니다.</p>
+            <ul style="margin: 10px 0 0 18px; display: flex; flex-direction: column; gap: 4px;">
+                <li>Google 광고 설정: <a href="https://adssettings.google.com" target="_blank" rel="noopener" style="color: var(--primary-color);">adssettings.google.com</a></li>
+                <li>NAI(Network Advertising Initiative) 거부 페이지: <a href="https://optout.networkadvertising.org" target="_blank" rel="noopener" style="color: var(--primary-color);">optout.networkadvertising.org</a></li>
+            </ul>
+
+            <p style="margin-top: 12px;"><strong>6-5. 제3자 광고 벤더</strong></p>
+            <p style="margin-top: 8px;">Google AdSense 외에도 제3자 광고 벤더가 쿠키를 사용하여 이 사이트에 광고를 게재할 수 있습니다. 이 경우 해당 벤더의 개인정보처리방침이 별도로 적용됩니다. 서비스는 제3자 광고 벤더의 쿠키 사용에 대한 접근 권한이 없으며 이를 통제할 수 없습니다.</p>
+
+            <!-- 7 -->
+            <h2 style="margin-top: 28px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">제7조 (사용자의 권리)</h2>
+            <p>사용자는 언제든지 다음의 권리를 행사할 수 있습니다.</p>
+            <ul style="margin: 10px 0 0 18px; display: flex; flex-direction: column; gap: 4px;">
+                <li>서비스 로그아웃 후 계정 연결 해제를 통한 데이터 접근 차단</li>
+                <li>contact.html 문의를 통한 저장 데이터 삭제 요청</li>
+                <li>브라우저 설정을 통한 쿠키 관리 및 거부</li>
+                <li>Google 계정 설정에서 본 서비스의 접근 권한 철회</li>
+            </ul>
+
+            <!-- 8 -->
+            <h2 style="margin-top: 28px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">제8조 (개인정보처리방침의 변경)</h2>
+            <p>본 방침은 법령 또는 서비스 정책의 변경에 따라 내용이 수정될 수 있습니다. 변경 시 웹사이트에 공지하며, 중요한 변경의 경우 별도로 안내합니다. 최종 수정일을 반드시 확인하시기 바랍니다.</p>
+
+            <!-- 9 -->
+            <h2 style="margin-top: 28px; margin-bottom: 10px; font-size: 1.1rem; color: var(--primary-color);">제9조 (문의처)</h2>
+            <p>개인정보 관련 문의 사항은 <a href="contact.html" style="color: var(--primary-color); font-weight: 600;">문의하기 페이지</a>를 통해 연락해 주세요. 신속하게 답변 드리겠습니다.</p>
+
         </main>
-        
+
         <footer style="margin-top: 30px; text-align: center; font-size: 0.85rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 20px;">
             <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 15px;">
                 <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">홈</a>
+                <a href="blog.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">블로그</a>
                 <a href="about.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">소개</a>
                 <a href="privacy.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">개인정보처리방침</a>
                 <a href="contact.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">문의하기</a>
