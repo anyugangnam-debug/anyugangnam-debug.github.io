@@ -1,109 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
   <url>
-    <loc>https://haruplan.github.io/</loc>
+    <loc>https://anyugangnam-debug.github.io/</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/about.html</loc>
+    <loc>https://anyugangnam-debug.github.io/about.html</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog.html</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/privacy.html</loc>
+    <loc>https://anyugangnam-debug.github.io/privacy.html</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/contact.html</loc>
+    <loc>https://anyugangnam-debug.github.io/contact.html</loc>
     <lastmod>2026-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog1.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog1.html</loc>
     <lastmod>2026-03-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog2.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog2.html</loc>
     <lastmod>2026-03-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog3.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog3.html</loc>
     <lastmod>2026-04-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog4.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog4.html</loc>
     <lastmod>2026-04-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog5.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog5.html</loc>
     <lastmod>2026-04-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog6.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog6.html</loc>
     <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog7.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog7.html</loc>
     <lastmod>2026-04-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog8.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog8.html</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog9.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog9.html</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://haruplan.github.io/blog10.html</loc>
+    <loc>https://anyugangnam-debug.github.io/blog10.html</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
 </urlset>
